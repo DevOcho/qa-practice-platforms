@@ -1,0 +1,35 @@
+{% if employee not in data %}
+<div class="card">
+  <div class="card-body">
+    <b>No employees found!</b><br>
+    Please <a href="#">create</a> a new employee.
+  </div>
+</div>
+{% else %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Employee</th>
+      <th scope="col">Department</th>
+      <th scope="col">Office</th>
+      <th scope="col">Years of Service</th>
+      <th scope="col">Onboarding Checklist</th>
+      <th scope="col">Status</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for employee in data.employees %}
+    <tr>
+      <th scope="row">{{ employee.name }}</th>
+      <td>{{ employee.department }}</td>
+      <td>{{ employee.office }}</td>
+      <td>{{ employee.years_of_service }}</td>
+      <td>X of X</td>
+      <td>{{ employee.status.name }}</td>
+      <td>Actions go here</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}

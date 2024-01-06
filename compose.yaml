@@ -1,0 +1,21 @@
+services:
+  application1:
+    container_name: qa-test-app-1
+    build: app1/.
+    ports:
+      - "8800:5000"
+  #application2:
+    #container_name: qa-test-app-2
+    #build: app2/.
+    #ports:
+      #- "8801:5000"
+  #application3:
+    #container_name: qa-test-app-3
+    #build: app3/.
+    #ports:
+      #- "8803:5000"
+  db:
+    container_name: qa-test-db
+    image: "mariadb:11.2.2"
+    environment:
+        - MARIADB_ROOT_PASSWORD=qa_tester
