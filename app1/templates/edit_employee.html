@@ -1,0 +1,50 @@
+<div class="row">
+  <div class="col-6">
+    <h1>Edit Employee - {{ data.name }}</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <form hx-put="/employee/{{ data.id }}" hx-target="#main-content" hx-swap="innerHTML">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" value="{{ data.name }}">
+      </div>
+      <div class="mb-3">
+        <label for="years" class="form-label">Years of Service</label>
+        <input type="text" class="form-control" id="years" name="years" value="{{ data.years }}">
+      </div>
+      <div class="mb-3">
+        <label for="employee-status" class="form-label">Employee Status</label>
+        <select class="form-select" id="employee-status" aria-label="status" name="status">
+          {% for status in data.employee_statuses -%}
+          <option value="{{ status.id }}" {% if data.status == status.id %}selected{% endif %}>
+            {{ status.name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="department" class="form-label">Department</label>
+        <select class="form-select" id="department" aria-label="department" name="department">
+          {% for department in data.departments -%}
+          <option value="{{ department.id }}" {%if data.department == department.id %}selected{% endif %}>{{ department.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="offices" class="form-label">Offices</label>
+        <select class="form-select" id="offices" aria-label="office" name="office">
+          {% for office in data.offices -%}
+          <option value="{{ office.id }}" {%if data.office == office.id %}selected{% endif %}>{{ office.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+      <button class="btn btn-secondary"
+              hx-get="/employee_table"
+              hx-target="#main-content">Cancel</button>
+    </form>
+  </div>
+</div>

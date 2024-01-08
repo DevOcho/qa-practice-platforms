@@ -11,20 +11,12 @@ from peewee import (
     Model,
     TextField,
 )
-from playhouse.pool import PooledMySQLDatabase
+from playhouse.pool import SqliteDatabase
 from playhouse.shortcuts import ThreadSafeDatabaseMetadata
 
 
 # Setup the database connection
-db = PooledMySQLDatabase(
-        "app1",
-        user="root",
-        password="qa_tester",
-        host="qa-test-db",
-        port=3306,
-        max_connections=32,
-        stale_timeout=180,
-)
+db = SqliteDatabase("employees.db")
 
 
 # We will only have one database so let's make a base class and use it everywhere
@@ -39,17 +31,29 @@ class BaseModel(Model):
         model_metadata_class = ThreadSafeDatabaseMetadata
 
 
-class Employees(BaseModel):
-    """ The Employees table """
+class Departments(BaseModel):
+    """The departments in the company"""
 
     name = CharField()
-    department = CharField()
-    office = CharField()
-    years = IntegerField()
-    status = ForeignKeyField(EmployeeStatuses, backref="employee_statuses")
+
+
+class Offices(BaseModel):
+    """The offices in the company"""
+
+    name = CharField()
 
 
 class EmployeeStatuses(BaseModel):
-    """ The statuses an employee can have"""
+    """The statuses an employee can have"""
 
     name = CharField()
+
+
+class Employees(BaseModel):
+    """The Employees table"""
+
+    name = CharField()
+    department = ForeignKeyField(Departments, backref="departments")
+    office = ForeignKeyField(Offices, backref="offices")
+    years = IntegerField()
+    status = ForeignKeyField(EmployeeStatuses, backref="employee_statuses")
