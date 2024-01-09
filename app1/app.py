@@ -1,6 +1,8 @@
 from flask import Flask, render_template, redirect, url_for, request, current_app
 from model import db, EmployeeStatuses, Employees, Departments, Offices
 
+from peewee import IntegrityError
+
 app = Flask(__name__, static_folder="static", static_url_path="")
 
 
@@ -184,7 +186,7 @@ def update_office(oid):
     # Get the new value and send it to the user
     data = Offices.select().where(Offices.id == oid).get()
 
-    # Send the edit office form with the selected office loaded
+    # Send the office table row with the selected office loaded
     return render_template("view_office.html", data=data)
 
 
@@ -193,7 +195,82 @@ def delete_office(oid):
     """Delete the office"""
 
     # Delete the office in the database
-    Offices.delete().where(Offices.id == oid).execute()
+    try:
+        Offices.delete().where(Offices.id == oid).execute()
+    except IntegrityError as e:
+        return (f"Failed to delete the office: <br>{e}", 500)
 
     # return them to the updated office list
     return redirect(url_for("office_index"), 303)
+
+
+@app.route("/departments")
+def departments_index():
+    """Display the list of departments"""
+
+    # local vars
+    data = {}
+
+    # Get the list of departments from the database
+    data["departments"] = Departments.select()
+
+    # Return the template loaded with the departments
+    return render_template("departments.html", data=data)
+
+
+@app.route("/departments", methods=["POST"])
+def add_department():
+    """Create a new department"""
+
+    # local vars
+    data = {}
+
+    # Create the new department
+    Departments.create(name=request.form.get("department_name"))
+
+    # Get the list of departments from the database
+    data["departments"] = Departments.select()
+
+    # Return the template loaded with the departments
+    return render_template("departments.html", data=data)
+
+
+@app.route("/edit_department/<oid>")
+def edit_department(oid):
+    """The edit department form"""
+
+    # Local vars
+    data = Departments.select().where(Departments.id == oid).get()
+
+    # Send the edit department form with the selected department loaded
+    return render_template("edit_department.html", data=data)
+
+
+@app.route("/departments/<oid>", methods=["PUT"])
+def update_department(oid):
+    """The update the department"""
+
+    new_department_name = request.form.get("department_name")
+
+    # Update the department
+    Departments.update({Departments.name: new_department_name}).where(Departments.id == oid).execute()
+
+    # Get the new value and send it to the user
+    data = Departments.select().where(Departments.id == oid).get()
+
+    # Send the department table row with the selected department loaded
+    return render_template("view_department.html", data=data)
+
+
+@app.route("/departments/<oid>", methods=["DELETE"])
+def delete_department(oid):
+    """Delete the department"""
+
+    # Delete the department in the database
+    try:
+        Departments.delete().where(Departments.id == oid).execute()
+    except IntegrityError as e:
+        return (f"Failed to delete the department: <br>{e}", 500)
+
+    # return them to the updated department list
+    return redirect(url_for("departments_index"), 303)

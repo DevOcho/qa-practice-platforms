@@ -1,14 +1,14 @@
 <tr>
   <td scope="row" class="align-middle">
-    <form hx-put="/offices/{{ data.id }}"
+    <form hx-put="/departments/{{ data.id }}"
           hx-target="closest tr"
           hx-swap="outerHTML"
           class="row row-cols-lg-auto mt-2 align-items-center">
       <div class="col-12">
         <input type="text"
                class="form-control"
-               id="office_name"
-               name="office_name"
+               id="department_name"
+               name="department_name"
                value="{{ data.name }}">
       </div>
       <div class="col-12">
@@ -16,7 +16,7 @@
       </div>
       <div class="col-12">
         <button class="btn btn-secondary bg-secondary-subtle"
-                hx-get="/offices"
+                hx-get="/departments"
                 hx-target="#main-content"
                 hx-swap="innerHTML">{% trans %}Cancel{% endtrans %}</button>
       </div>

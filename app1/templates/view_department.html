@@ -4,12 +4,12 @@
   </td>
   <td class="align-middle text-end">
     <button class="btn btn-info bg-info-subtle text-white"
-            hx-get="/edit_office/{{ data.id }}"
+            hx-get="/edit_department/{{ data.id }}"
             hx-target="closest tr" hx-swap="outerHTML">
       <i class="bi bi-person-fill-check"></i> {% trans %}Edit{% endtrans %}
     </button>
     <button class="btn btn-danger bg-danger-subtle text-white"
-            hx-delete="/offices/{{ data.id }}"
+            hx-delete="/departments/{{ data.id }}"
             hx-target="#main-content">
       <i class="bi bi-person-fill-x"></i> {% trans %}Delete{% endtrans %}
     </button>

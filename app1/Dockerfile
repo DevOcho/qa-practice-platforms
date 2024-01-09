@@ -6,6 +6,6 @@ RUN pip install --upgrade pip
 RUN apk add --no-cache gcc musl-dev linux-headers sqlite
 WORKDIR /code
 #RUN pip3 install -r requirements.txt
-run pip3 install flask peewee
+run pip3 install flask peewee flask-babel
 EXPOSE 5000
 CMD ["flask", "run"]
