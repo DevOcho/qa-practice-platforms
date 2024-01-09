@@ -26,8 +26,15 @@ print(" done")
 print("  - Creating Offices...".ljust(40), end="")
 offices = [
     {"name": "Santiago"},
-    {"name": "La Vega"},
     {"name": "Moca"},
+    {"name": "La Vega"},
+    {"name": "San Francisco de Macoris"},
+    {"name": "Tamboril"},
+    {"name": "Salcedo"},
+    {"name": "Tenares"},
+    {"name": "Villa Bisonó"},
+    {"name": "Esperanza"},
+    {"name": "Mao"},
     {"name": "Luperon"},
 ]
 with db.atomic():
@@ -38,12 +45,7 @@ print(" done")
 # => Departments --------------------------------------------------------------
 print("  - Creating Departments...".ljust(40), end="")
 departments = [
-    {"name": "HR"},
-    {"name": "Operations"},
-    {"name": "Technology"},
-    {"name": "Finance"},
-    {"name": "Legal"},
-    {"name": "Executive"},
+    {"name": "Recursos Humanos"},
 ]
 with db.atomic():
     Departments.insert_many(  # pylint: disable=no-value-for-parameter

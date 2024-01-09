@@ -1,11 +1,23 @@
 from flask import Flask, render_template, redirect, url_for, request, current_app
 from model import db, EmployeeStatuses, Employees, Departments, Offices
-
+from flask_babel import Babel
 from peewee import IntegrityError
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
 
+# Setup Flask-Babel ============================================================
+babel = Babel(app, default_locale='en')
+AVAILABLE_LOCALES = ['en', 'es']
+
+def get_locale():
+    current_app.logger.debug(request.accept_languages.best_match(AVAILABLE_LOCALES))
+    return request.accept_languages.best_match(AVAILABLE_LOCALES)
+
+babel.init_app(app, locale_selector=get_locale)
+# ==============================================================================
+
+# Application Routes ===========================================================
 @app.route("/")
 def index():
     """Site Index"""
@@ -15,9 +27,6 @@ def index():
 
     # Get the list of employees
     data["employees"] = Employees.select()
-
-    for employee in data["employees"]:
-        current_app.logger.debug(employee)
 
     # Send them the working template
     return render_template("index.html", data=data)
