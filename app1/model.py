@@ -12,11 +12,10 @@ from peewee import (
     TextField,
 )
 from playhouse.pool import SqliteDatabase
-from playhouse.shortcuts import ThreadSafeDatabaseMetadata
 
 
 # Setup the database connection
-db = SqliteDatabase("employees.db")
+db = SqliteDatabase("employees.db", pragmas={"foreign_keys": 1})
 
 
 # We will only have one database so let's make a base class and use it everywhere
@@ -28,7 +27,6 @@ class BaseModel(Model):
 
         database = db
         legacy_table_names = False
-        model_metadata_class = ThreadSafeDatabaseMetadata
 
 
 class Departments(BaseModel):

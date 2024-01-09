@@ -31,9 +31,7 @@ offices = [
     {"name": "Luperon"},
 ]
 with db.atomic():
-    Offices.insert_many(  # pylint: disable=no-value-for-parameter
-        offices
-    ).execute()
+    Offices.insert_many(offices).execute()  # pylint: disable=no-value-for-parameter
 print(" done")
 
 

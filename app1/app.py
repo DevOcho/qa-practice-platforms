@@ -128,3 +128,72 @@ def delete_employee(eid):
     Employees.delete().where(Employees.id == eid).execute()
 
     return redirect(url_for("employee_table"), 303)
+
+
+@app.route("/offices")
+def office_index():
+    """Display the list of offices"""
+
+    # local vars
+    data = {}
+
+    # Get the list of offices from the database
+    data["offices"] = Offices.select()
+
+    # Return the template loaded with the offices
+    return render_template("offices.html", data=data)
+
+
+@app.route("/offices", methods=["POST"])
+def add_office():
+    """Create a new office"""
+
+    # local vars
+    data = {}
+
+    # Create the new office
+    Offices.create(name=request.form.get("office_name"))
+
+    # Get the list of offices from the database
+    data["offices"] = Offices.select()
+
+    # Return the template loaded with the offices
+    return render_template("offices.html", data=data)
+
+
+@app.route("/edit_office/<oid>")
+def edit_office(oid):
+    """The edit office form"""
+
+    # Local vars
+    data = Offices.select().where(Offices.id == oid).get()
+
+    # Send the edit office form with the selected office loaded
+    return render_template("edit_office.html", data=data)
+
+
+@app.route("/offices/<oid>", methods=["PUT"])
+def update_office(oid):
+    """The update the office"""
+
+    new_office_name = request.form.get("office_name")
+
+    # Update the office
+    Offices.update({Offices.name: new_office_name}).where(Offices.id == oid).execute()
+
+    # Get the new value and send it to the user
+    data = Offices.select().where(Offices.id == oid).get()
+
+    # Send the edit office form with the selected office loaded
+    return render_template("view_office.html", data=data)
+
+
+@app.route("/offices/<oid>", methods=["DELETE"])
+def delete_office(oid):
+    """Delete the office"""
+
+    # Delete the office in the database
+    Offices.delete().where(Offices.id == oid).execute()
+
+    # return them to the updated office list
+    return redirect(url_for("office_index"), 303)

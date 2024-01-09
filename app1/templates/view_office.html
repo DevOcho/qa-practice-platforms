@@ -1,0 +1,17 @@
+<tr>
+  <td scope="row" class="align-middle">
+    {{ data.name }}
+  </td>
+  <td class="align-middle text-end">
+    <button class="btn btn-info bg-info-subtle text-white"
+            hx-get="/edit_office/{{ data.id }}"
+            hx-target="closest tr" hx-swap="outerHTML">
+      <i class="bi bi-person-fill-check"></i> Edit
+    </button>
+    <button class="btn btn-danger bg-danger-subtle text-white"
+            hx-delete="/offices/{{ data.id }}"
+            hx-target="#main-content">
+      <i class="bi bi-person-fill-x"></i> Delete
+    </button>
+  </td>
+</tr>
