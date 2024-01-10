@@ -57,8 +57,8 @@ print(" done")
 # => Employee Statuses --------------------------------------------------------
 print("  - Creating Employee Statuses...".ljust(40), end="")
 employee_statuses = [
-    {"name": "Hired"},
-    {"name": "Started"},
+    {"name": "Hired - Not Onboarded"},
+    {"name": "Employed"},
     {"name": "Fired"},
     {"name": "Quit"},
 ]
