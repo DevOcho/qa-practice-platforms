@@ -51,7 +51,7 @@ msgstr "-- Elige un departamento"
 #: templates/add_employee.html:37 templates/edit_employee.html:37
 #: templates/index.html:39
 msgid "Offices"
-msgstr "La Officinas"
+msgstr "Las Oficinas"
 
 #: templates/add_employee.html:39
 msgid "-- Choose an office --"
@@ -145,7 +145,7 @@ msgstr "Trajabador"
 
 #: templates/employee_table.html:25 templates/offices.html:44
 msgid "Office"
-msgstr "Officina"
+msgstr "Oficina"
 
 #: templates/employee_table.html:27
 msgid "Onboarding Checklist"
@@ -177,7 +177,7 @@ msgstr "un nuevo officina"
 
 #: templates/offices.html:16
 msgid "New Office"
-msgstr "Nuevo Officina"
+msgstr "Nuevo Oficina"
 
 #: templates/offices.html:25
 msgid "Office Name"
