@@ -1,0 +1,7 @@
+{% for employee in data.employees %}
+<div class="card">
+  <div class="card-body">
+    <a href="#" x-on:click="employee_name = '{{ employee.name }}'">{{ employee.name }}</a><br>
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,188 @@
+# Spanish translations for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-01-09 14:15-0600\n"
+"PO-Revision-Date: 2024-01-09 14:16-0600\n"
+"Last-Translator: Kenny Pyatt <kenny@devocho.com>\n"
+"Language: es\n"
+"Language-Team: es <translations@devocho.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+#: templates/add_employee.html:3
+msgid "Create New Employee"
+msgstr "Crear Nuevo Trajabador"
+
+#: templates/add_employee.html:11 templates/edit_employee.html:11
+msgid "Name"
+msgstr "Nombre"
+
+#: templates/add_employee.html:15 templates/edit_employee.html:15
+#: templates/employee_table.html:26
+msgid "Years of Service"
+msgstr "Años de Servicio"
+
+#: templates/add_employee.html:19 templates/edit_employee.html:19
+msgid "Employee Status"
+msgstr "Estado del Trajabador"
+
+#: templates/add_employee.html:21
+msgid "-- Choose a status --"
+msgstr "-- Elige un estado --"
+
+#: templates/add_employee.html:28 templates/departments.html:44
+#: templates/edit_employee.html:29 templates/employee_table.html:24
+msgid "Department"
+msgstr "Departamento"
+
+#: templates/add_employee.html:30
+msgid "-- Choose a department --"
+msgstr "-- Elige un departamento"
+
+#: templates/add_employee.html:37 templates/edit_employee.html:37
+#: templates/index.html:39
+msgid "Offices"
+msgstr "Las Oficinas"
+
+#: templates/add_employee.html:39
+msgid "-- Choose an office --"
+msgstr "-- Elige una officina --"
+
+#: templates/add_employee.html:45 templates/departments.html:27
+#: templates/edit_employee.html:44 templates/offices.html:27
+msgid "Submit"
+msgstr "Entregar"
+
+#: templates/add_employee.html:48 templates/departments.html:28
+#: templates/edit_department.html:21 templates/edit_employee.html:47
+#: templates/edit_office.html:21 templates/offices.html:28
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/departments.html:6
+msgid "No departments found!"
+msgstr "¡No se encontraron departamentos!"
+
+#: templates/departments.html:7 templates/employee_table.html:7
+#: templates/offices.html:7
+msgid "Please"
+msgstr "Por Favor"
+
+#: templates/departments.html:9 templates/employee_table.html:9
+#: templates/offices.html:9
+msgid "create"
+msgstr "crear"
+
+#: templates/departments.html:9
+msgid "a new department"
+msgstr "un nuevo departamento"
+
+#: templates/departments.html:16
+msgid "New Department"
+msgstr "Nuevo Departamento"
+
+#: templates/departments.html:25
+msgid "Department Name"
+msgstr "Nombre de departamento"
+
+#: templates/departments.html:45 templates/employee_table.html:29
+#: templates/offices.html:45
+msgid "Actions"
+msgstr "Actiones"
+
+#: templates/departments.html:56 templates/employee_table.html:45
+#: templates/offices.html:56 templates/view_department.html:9
+#: templates/view_office.html:9
+msgid "Edit"
+msgstr "Editar"
+
+#: templates/departments.html:61 templates/employee_table.html:50
+#: templates/offices.html:61 templates/view_department.html:14
+#: templates/view_office.html:14
+msgid "Delete"
+msgstr "Borrar"
+
+#: templates/departments.html:73
+msgid "Note: You can not delete departments that have employees assigned to them."
+msgstr "Nota: No puede eliminar departamentos que tengan empleados asignados."
+
+#: templates/edit_department.html:15 templates/edit_office.html:15
+msgid "Update"
+msgstr "Actualizar"
+
+#: templates/edit_employee.html:3
+msgid "Edit Employee"
+msgstr "Editar Trajabador"
+
+#: templates/employee_table.html:1 templates/index.html:33
+msgid "Employee Dashboard"
+msgstr "Panel de trajabadores"
+
+#: templates/employee_table.html:6
+msgid "No employees found!"
+msgstr "¡No se encontraron empleados!"
+
+#: templates/employee_table.html:9
+msgid "a new employee."
+msgstr "un nuevo trajabador"
+
+#: templates/employee_table.html:17
+msgid "New Employee"
+msgstr "Nuevo Trajabador"
+
+#: templates/employee_table.html:23
+msgid "Employee"
+msgstr "Trajabador"
+
+#: templates/employee_table.html:25 templates/offices.html:44
+msgid "Office"
+msgstr "Oficina"
+
+#: templates/employee_table.html:27
+msgid "Onboarding Checklist"
+msgstr "Lista de verificación de incorporación"
+
+#: templates/employee_table.html:28
+msgid "Status"
+msgstr "Estado"
+
+#: templates/index.html:19
+msgid "HR Portal"
+msgstr "Portal de Recursos Humanos"
+
+#: templates/index.html:45
+msgid "Departments"
+msgstr "Departamentos"
+
+#: templates/index.html:63
+msgid "Close"
+msgstr "Cerrar"
+
+#: templates/offices.html:6
+msgid "No offices found!"
+msgstr "¡No se encontraron oficinas!"
+
+#: templates/offices.html:9
+msgid "a new office"
+msgstr "un nuevo officina"
+
+#: templates/offices.html:16
+msgid "New Office"
+msgstr "Nuevo Oficina"
+
+#: templates/offices.html:25
+msgid "Office Name"
+msgstr "Nombre de officina"
+
+#: templates/offices.html:73
+msgid "Note: You can not delete offices that have employees assigned to them."
+msgstr "Nota: No puede eliminar oficinas que tengan empleados asignados."

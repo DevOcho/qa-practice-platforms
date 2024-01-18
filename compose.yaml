@@ -6,11 +6,13 @@ services:
       - /home/rogue/source/devocho/qa-practice-platforms/app1:/code
     ports:
       - "8800:5000"
-  #application2:
-    #container_name: qa-test-app-2
-    #build: app2/.
-    #ports:
-      #- "8801:5000"
+  application2:
+    container_name: qa-test-app-2
+    build: app2/.
+    volumes:
+      - /home/rogue/source/devocho/qa-practice-platforms/app2:/code
+    ports:
+      - "8801:5000"
   #application3:
     #container_name: qa-test-app-3
     #build: app3/.

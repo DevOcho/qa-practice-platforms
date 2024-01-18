@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-6">
+    <h1>{% trans %}Create New Employee{% endtrans %}</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-6">
+    <form hx-post="/employee" hx-target="#main-content" hx-swap="innerHTML">
+      <div class="mb-3">
+        <label for="name" class="form-label">{% trans %}Name{% endtrans %}</label>
+        <input type="text" class="form-control" id="name" name="name">
+      </div>
+      <div class="mb-3">
+        <label for="years" class="form-label">{% trans %}Years of Service{% endtrans %}</label>
+        <input type="text" class="form-control" id="years" name="years">
+      </div>
+      <div class="mb-3">
+        <label for="employee-status" class="form-label">{% trans %}Employee Status{% endtrans %}</label>
+        <select class="form-select" id="employee-status" aria-label="status" name="status">
+          <option selected>{% trans %}-- Choose a status --{% endtrans %}</option>
+          {% for status in data.employee_statuses -%}
+          <option value="{{ status.id }}">{{ status.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="department" class="form-label">{% trans %}Department{% endtrans %}</label>
+        <select class="form-select" id="department" aria-label="department" name="department">
+          <option selected>{% trans %}-- Choose a department --{% endtrans %}</option>
+          {% for department in data.departments -%}
+          <option value="{{ department.id }}">{{ department.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="offices" class="form-label">{% trans %}Offices{% endtrans %}</label>
+        <select class="form-select" id="offices" aria-label="office" name="office">
+          <option selected>{% trans %}-- Choose an office --{% endtrans %}</option>
+          {% for office in data.offices -%}
+          <option value="{{ office.id }}">{{ office.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">{% trans %}Submit{% endtrans %}</button>
+      <button class="btn btn-secondary"
+              hx-get="/employee_table"
+              hx-target="#main-content">{% trans %}Cancel{% endtrans %}</button>
+    </form>
+  </div>
+</div>

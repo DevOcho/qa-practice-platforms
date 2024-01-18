@@ -1,0 +1,61 @@
+<div class="row">
+  <div class="col-6">
+    <h1>{% trans %}Create New PIP{% endtrans %}</h1>
+  </div>
+</div>
+
+<form hx-post="/pips" hx-target="#main-content" hx-swap="innerHTML">
+<div class="row mb-3">
+  <div class="col-3" x-data="{ employee_name: '' }">
+    <label for="employee" class="form-label">{% trans %}Employee{% endtrans %}</label>
+    <input type="search"
+           class="form-control"
+           id="employee"
+           name="employee"
+           hx-post="/employee_search"
+           hx-trigger="input changed delay:500ms, search"
+           hx-target="#pip-employee"
+           hx-indicator=".htmx-indicator"
+           x-model="employee_name">
+    <div class="" id="pip-employee"></div>
+    <div class="spinner-border htmx-indicator" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div class="col-3">
+    <label for="start-date" class="form-label">{% trans %}Start Date{% endtrans %}</label>
+    <input type="date" class="form-control" id="start-date" name="start_date">
+  </div>
+  <div class="col-3">
+    <label for="end-date" class="form-label">{% trans %}End Date{% endtrans %}</label>
+    <input type="date" class="form-control" id="end-date" name="end_date">
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-3">
+    <label for="pip-status" class="form-label">{% trans %}PIP Status{% endtrans %}</label>
+    <select class="form-select" aria-label="PIP Status" id="pip-status" name="pip_status">
+      <option selected>Select status</option>
+      {% for status in data.statuses %}
+      <option value="{{ status.id }}">{{ status.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-3">
+    <label for="manager" class="form-label">{% trans %}Manager{% endtrans %}</label>
+    <input type="search" class="form-control" id="manager" name="manager">
+  </div>
+  <div class="col-3">
+    <label for="hr-rep" class="form-label">{% trans %}HR Representative{% endtrans %}</label>
+    <input type="search" class="form-control" id="hr-rep" name="hr_rep">
+  </div>
+</div>
+<div class="row">
+  <div class="col-9 text-end">
+    <button type="submit" class="btn btn-primary">{% trans %}Submit{% endtrans %}</button>
+    <button class="btn btn-secondary"
+            hx-get="/performance_plans"
+            hx-target="#main-content">{% trans %}Cancel{% endtrans %}</button>
+  </div>
+</div>
+</form>

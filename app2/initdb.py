@@ -3,7 +3,17 @@
 import os
 
 # Bread Project Libraries
-from model import db, Departments, EmployeeStatuses, Employees, Offices
+from model import (
+    db,
+    Departments,
+    EmployeeStatuses,
+    Employees,
+    Offices,
+    PipStatuses,
+    Pips,
+    PipTaskGrades,
+    PipTasks,
+)
 
 # Removing the current database
 if os.path.isfile("employees.db"):
@@ -18,7 +28,18 @@ db.connect()
 
 # Create the tables
 print("  - Creating tables...".ljust(40), end="")
-db.create_tables([Departments, Offices, EmployeeStatuses, Employees])
+db.create_tables(
+    [
+        Departments,
+        Offices,
+        EmployeeStatuses,
+        Employees,
+        PipStatuses,
+        Pips,
+        PipTaskGrades,
+        PipTasks,
+    ]
+)
 print(" done")
 
 
@@ -71,6 +92,40 @@ employee_statuses = [
 with db.atomic():
     EmployeeStatuses.insert_many(  # pylint: disable=no-value-for-parameter
         employee_statuses
+    ).execute()
+print(" done")
+
+
+# => PIP Statuses -------------------------------------------------------------
+print("  - Creating PIP Statuses...".ljust(40), end="")
+pip_statuses = [
+    {"name": "Proposed"},
+    {"name": "In Progress"},
+    {"name": "Completed - Success"},
+    {"name": "Completed - Failure"},
+]
+with db.atomic():
+    PipStatuses.insert_many(  # pylint: disable=no-value-for-parameter
+        pip_statuses
+    ).execute()
+print(" done")
+
+# => PIP Task Grades ----------------------------------------------------------
+print("  - Creating PIP Task Grades...".ljust(40), end="")
+pip_task_grades = [
+    {"name": "A+"},
+    {"name": "A"},
+    {"name": "A-"},
+    {"name": "B+"},
+    {"name": "B"},
+    {"name": "B-"},
+    {"name": "C"},
+    {"name": "D"},
+    {"name": "F"},
+]
+with db.atomic():
+    PipTaskGrades.insert_many(  # pylint: disable=no-value-for-parameter
+        pip_task_grades
     ).execute()
 print(" done")
 
