@@ -1,17 +1,18 @@
 <div class="row">
   <div class="col-6">
-    <h1>{% trans %}Create New PIP{% endtrans %}</h1>
+    <h1>{% trans %}Edit PIP{% endtrans %} - {{ data.pip.employee.name }}</h1>
   </div>
 </div>
 
-<form hx-post="/pips" hx-target="#main-content" hx-swap="innerHTML" autocomplete="off">
+<form hx-put="/pip/{{ data.pip.id }}" hx-target="#main-content" hx-swap="innerHTML" autocomplete="off">
 <div class="row mb-3">
-  <div class="col-3" x-data="{ employee_name: '' }">
+  <div class="col-3" x-data="{ employee_name: '{{ data.pip.employee.name }}' }">
     <label for="employee" class="form-label">{% trans %}Employee{% endtrans %}</label>
-    <input type="search"
+    <input type="text"
            class="form-control"
            id="employee"
            name="employee"
+           value="{{ data.pip.employee.name }}"
            hx-post="/employee_search/employee"
            hx-trigger="input changed delay:400ms, search"
            hx-target="#pip-employee"
@@ -20,41 +21,44 @@
   </div>
   <div class="col-3">
     <label for="start-date" class="form-label">{% trans %}Start Date{% endtrans %}</label>
-    <input type="date" class="form-control" id="start-date" name="start_date" @change="set90Days();">
+    <input type="date" class="form-control"
+           id="start-date" name="start_date" value="{{ data.pip.start_date }}"
+           @change="set90Days();">
   </div>
   <div class="col-3">
     <label for="end-date" class="form-label">{% trans %}End Date{% endtrans %}</label>
-    <input type="date" class="form-control" id="end-date" name="end_date">
+    <input type="date" class="form-control" id="end-date" name="end_date" value="{{ data.pip.end_date }}">
   </div>
 </div>
 <div class="row mb-3">
   <div class="col-3">
     <label for="pip-status" class="form-label">{% trans %}PIP Status{% endtrans %}</label>
     <select class="form-select" aria-label="PIP Status" id="pip-status" name="pip_status">
-      <option selected>Select status</option>
       {% for status in data.statuses %}
-      <option value="{{ status.id }}">{{ status.name }}</option>
+      <option value="{{ status.id }}" {% if data.pip.status.id == status.id %}selected{% endif %}>{{ status.name }}</option>
       {% endfor %}
     </select>
   </div>
-  <div class="col-3" x-data="{ manager_name: '' }">
+  <div class="col-3" x-data="{ manager_name: '{{ data.pip.manager.name }}' }">
     <label for="manager" class="form-label">{% trans %}Manager{% endtrans %}</label>
     <input type="search"
            class="form-control"
            id="manager"
            name="manager"
+           value="{{ data.pip.manager.name }}"
            hx-post="/employee_search/manager"
            hx-trigger="input changed delay:400ms, search"
            hx-target="#pip-manager"
            x-model="manager_name">
     <div class="" id="pip-manager" x-data="{ manager_list: true}"></div>
   </div>
-  <div class="col-3" x-data="{ hr_name: '' }">
+  <div class="col-3" x-data="{ hr_name: '{{ data.pip.hr_rep.name }}' }">
     <label for="hr" class="form-label">{% trans %}HR Representative{% endtrans %}</label>
     <input type="search"
            class="form-control"
            id="hr"
            name="hr"
+           value="{{ data.pip.hr_rep.name }}"
            hx-post="/employee_search/hr"
            hx-trigger="input changed delay:400ms, search"
            hx-target="#pip-hr"

@@ -1,5 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request, current_app
-from model import db, EmployeeStatuses, Employees, Departments, Offices, Pips, PipStatuses
+from model import (
+    db,
+    EmployeeStatuses,
+    Employees,
+    Departments,
+    Offices,
+    Pips,
+    PipStatuses,
+)
 from flask_babel import Babel
 from peewee import IntegrityError
 
@@ -7,15 +15,17 @@ app = Flask(__name__, static_folder="static", static_url_path="")
 
 
 # Setup Flask-Babel ============================================================
-babel = Babel(app, default_locale='en')
-AVAILABLE_LOCALES = ['en', 'es']
+babel = Babel(app, default_locale="en")
+AVAILABLE_LOCALES = ["en", "es"]
+
 
 def get_locale():
-    current_app.logger.debug(request.accept_languages.best_match(AVAILABLE_LOCALES))
     return request.accept_languages.best_match(AVAILABLE_LOCALES)
+
 
 babel.init_app(app, locale_selector=get_locale)
 # ==============================================================================
+
 
 # Application Routes ===========================================================
 @app.route("/")
@@ -262,7 +272,9 @@ def update_department(oid):
     new_department_name = request.form.get("department_name")
 
     # Update the department
-    Departments.update({Departments.name: new_department_name}).where(Departments.id == oid).execute()
+    Departments.update({Departments.name: new_department_name}).where(
+        Departments.id == oid
+    ).execute()
 
     # Get the new value and send it to the user
     data = Departments.select().where(Departments.id == oid).get()
@@ -308,19 +320,121 @@ def add_pip():
     return render_template("add_pip.html", data=data)
 
 
-@app.route("/employee_search", methods=["POST"])
-def employee_search():
-    """Return a list of employee names"""
+@app.route("/pips", methods=["POST"])
+def create_pip():
+    """Make a new PIP in the database"""
+
+    # Get the user submitted values
+    employee = request.form.get("employee")
+    start_date = request.form.get("start_date")
+    end_date = request.form.get("end_date")
+    status = request.form.get("pip_status")
+    manager = request.form.get("manager")
+    hr_rep = request.form.get("hr")
+
+    # We need to get the employee id from the employee name
+    db_employee = Employees.select().where(Employees.name == employee).get()
+    db_manager = Employees.select().where(Employees.name == manager).get()
+    db_hr_rep = Employees.select().where(Employees.name == hr_rep).get()
+
+    # Create the new record
+    Pips.create(
+        employee=db_employee.id,
+        manager=db_manager.id,
+        hr_rep=db_hr_rep.id,
+        status=status,
+        start_date=start_date,
+        end_date=end_date,
+    )
+
+    return redirect(url_for("performance_plans_browse"))
+
+
+@app.route("/pip/<pid>")
+def read_pip(pid):
+    """Details page for a PIP"""
+
+    # The information for this specific PIP
+    data = Pips.select().where(Pips.id == pid).get()
+
+    # loaded in a template and sent via HTMX
+    return render_template("pip_read.html", data=data)
+
+
+@app.route("/edit_pip/<pid>")
+def edit_pip(pid):
+    """edit form for a PIP"""
+
+    # The information for this specific PIP
+    data = {}
+    data["pip"] = Pips.select().where(Pips.id == pid).get()
+    data["statuses"] = PipStatuses.select()
+
+    # loaded in a template and sent via HTMX
+    return render_template("pip_edit.html", data=data)
+
+
+@app.route("/pip/<pid>", methods=["PUT"])
+def save_pip(pid):
+    """Save updates to a PIP"""
+
+    # Get the user submitted values
+    employee = request.form.get("employee")
+    start_date = request.form.get("start_date")
+    end_date = request.form.get("end_date")
+    status = request.form.get("pip_status")
+    manager = request.form.get("manager")
+    hr_rep = request.form.get("hr")
+
+    # We need to get the employee id from the employee name
+    db_employee = Employees.select().where(Employees.name == employee).get()
+    db_manager = Employees.select().where(Employees.name == manager).get()
+    db_hr_rep = Employees.select().where(Employees.name == hr_rep).get()
+
+    # Update them in the database
+    Pips.update(
+        {
+            Pips.employee: db_employee,
+            Pips.start_date: start_date,
+            Pips.end_date: end_date,
+            Pips.status: status,
+            Pips.manager: db_manager,
+            Pips.hr_rep: db_hr_rep,
+        }
+    ).where(Pips.id == pid).execute()
+
+    # Let's get the updated information for this PIP
+    data = Pips.select().where(Pips.id == pid).get()
+
+    # loaded in a template and sent via HTMX
+    return render_template("pip_read.html", data=data)
+
+
+@app.route("/pip/<pid>", methods=["DELETE"])
+def delete_pip(pid):
+    """Delete a PIP"""
+
+    # Delete any PIP associated tasks
+
+    # Delete the PIP
+    Pips.delete().where(Pips.id == pid).execute()
+
+    return redirect(url_for("performance_plans_browse"), 303)
+
+
+# Helper functions =============================================================
+@app.route("/employee_search/<keyword>", methods=["POST"])
+def employee_search(keyword):
+    """HTMX powered: Return a list of employee names"""
 
     # Local vars
     data = {}
 
     # What have they searched for so far?
-    s = request.form.get("employee")
+    s = request.form.get(keyword)
 
     # If they haven't sent characters don't send anything
     if len(s) > 0:
         data["employees"] = Employees.select().where(Employees.name.startswith(s))
 
-    return render_template("employee_results.html", data=data)
-
+    return render_template("employee_results.html", data=data, keyword=keyword)

@@ -1,0 +1,51 @@
+<div class="row mb-4">
+  <div class="col-9">
+    <h1>PIP Details - {{ data.employee.name }}</h1>
+  </div>
+  <div class="col-3">
+    <button class="btn btn-primary bg-primary-subtle text-white"
+            hx-get="/edit_pip/{{ data.id }}"
+            hx-target="#main-content">
+      <i class="bi bi-person-fill-check"></i> Edit Pip
+    </button>
+    <button class="btn btn-danger bg-danger-subtle text-white"
+            hx-delete="/pip/{{ data.id }}"
+            hx-target="#main-content">
+      <i class="bi bi-person-fill-x"></i> Delete Pip
+    </button>
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-2">
+    <b>Employee</b><br>
+    {{ data.employee.name }}
+  </div>
+  <div class="col-2">
+    <b>Start Date</b><br>
+    {{ data.start_date }}
+  </div>
+  <div class="col-2">
+    <b>End Date</b><br>
+    {{ data.end_date }}
+  </div>
+  <div class="col-2">
+    <b>Manager</b><br>
+    {{ data.manager.name }}
+  </div>
+</div>
+
+<div class="row mb-4">
+  <div class="col-2">
+    <b>Status</b><br>
+    {{ data.status.name }}
+  </div>
+  <div class="col-2">
+  </div>
+  <div class="col-2">
+  </div>
+  <div class="col-2">
+    <b>HR Representative</b><br>
+    {{ data.hr_rep.name }}
+  </div>
+</div>
