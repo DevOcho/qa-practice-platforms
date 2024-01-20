@@ -83,7 +83,8 @@ class PipTaskGrades(BaseModel):
 class PipTasks(BaseModel):
     """ Tasks assigned to a Pip"""
 
+    pip = ForeignKeyField(Pips, backref="pips")
     task = CharField()
     due_date = DateField()
     progress = IntegerField()
-    grade = ForeignKeyField(PipTaskGrades, backref="pip_task_grades")
+    grade = ForeignKeyField(PipTaskGrades, null=True, backref="pip_task_grades")

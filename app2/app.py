@@ -1,4 +1,16 @@
+"""QA Test App v2
+
+  This adds the PIP module to the HR portal.
+
+  Note: This app is intended only for testing and not for any other purpose.
+        there are intentional bugs and security issues in this code.
+
+"""
+
 from flask import Flask, render_template, redirect, url_for, request, current_app
+from flask_babel import Babel
+from peewee import IntegrityError
+
 from model import (
     db,
     EmployeeStatuses,
@@ -7,9 +19,9 @@ from model import (
     Offices,
     Pips,
     PipStatuses,
+    PipTaskGrades,
+    PipTasks,
 )
-from flask_babel import Babel
-from peewee import IntegrityError
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
@@ -350,15 +362,121 @@ def create_pip():
     return redirect(url_for("performance_plans_browse"))
 
 
-@app.route("/pip/<pid>")
+@app.route("/pip/<pid>", methods=["GET"])
 def read_pip(pid):
     """Details page for a PIP"""
 
-    # The information for this specific PIP
-    data = Pips.select().where(Pips.id == pid).get()
+    # Local Vars
+    data = {}
+
+    # the information for this specific pip
+    data["pip"] = Pips.select().where(Pips.id == pid).get()
+
+    # Get the tasks for this pip
+    data["tasks"] = PipTasks.select().where(PipTasks.pip == pid)
 
     # loaded in a template and sent via HTMX
     return render_template("pip_read.html", data=data)
+
+
+@app.route("/pip/new_task/<pid>")
+def new_pip_task_form(pid):
+    """Send the new task form via HTMX"""
+
+    # Local Vars
+    data = {}
+
+    # the information for this specific pip
+    data["pip"] = Pips.select().where(Pips.id == pid).get()
+
+    # The PIP Task Statuses
+    data["task_grades"] = PipTaskGrades.select()
+
+    # New task form sent via HTMX
+    return render_template("pip_new_task.html", data=data)
+
+
+@app.route("/pip/task", methods=["POST"])
+def save_new_pip_task():
+    """Save the new PIP Task"""
+
+    # Get the values from the user
+    pid = request.form.get("pid")
+    task = request.form.get("task")
+    due_date = request.form.get("due_date")
+    progress = request.form.get("progress")
+    grade = request.form.get("grade")
+
+    # Create the record with or without the grade
+    if len(grade) > 2:
+        PipTasks.create(pip=pid, task=task, due_date=due_date, progress=progress)
+    else:
+        PipTasks.create(pip=pid, task=task, due_date=due_date, progress=progress, grade=grade)
+
+    return redirect(url_for("read_pip", pid=pid))
+
+
+@app.route("/pip/task/edit/<tid>")
+def edit_pip_task(tid):
+    """Edit form for a PIP Task"""
+
+    # Local Vars
+    data = {}
+
+    # Get the data for this task
+    data["task"] = PipTasks.select().where(PipTasks.id == tid).get()
+
+    # Send back the edit form with the task loaded
+    return render_template("pip_edit_task.html", data=data)
+
+
+@app.route("/pip/task/<tid>", methods=["PUT"])
+def update_pip_task(tid):
+    """Update an editted PIP Task"""
+
+    # Local Vars
+    update_record = {}
+
+    # Get the values from the user
+    pid = request.form.get("pid")
+    task = request.form.get("task")
+    due_date = request.form.get("due_date")
+    progress = request.form.get("progress")
+    grade = request.form.get("grade")
+
+    # Update the record in the database
+    if len(grade) > 2:  # Don't send grade if they have't assigned one
+        update_record = {
+            PipTasks.task: task,
+            PipTasks.due_date: due_date,
+            PipTasks.progress: progress,
+        }
+    else:
+        update_record = {
+            PipTasks.task: task,
+            PipTasks.due_date: due_date,
+            PipTasks.progress: progress,
+            PipTasks.grade: grade,
+        }
+    PipTasks.update(update_record).where(PipTasks.id == tid).execute()
+
+    # Send them back to the PIP details
+    current_app.logger.debug(url_for("read_pip", pid=pid))
+    return redirect(url_for("read_pip", pid=pid), 303)
+
+
+@app.route("/pip/task/<tid>", methods=["DELETE"])
+def delete_pip_task(tid):
+    """Delete a PIP Task"""
+
+    # We need to figure out with pip goes with this task id
+    pip_task = PipTasks.select().where(PipTasks.id == tid).get()
+
+    # Now we need to delete the PIP Task in the database
+    PipTasks.delete().where(PipTasks.id == tid).execute()
+
+    # And redirect back to the PIP details page where we were
+    return redirect(url_for("read_pip", pid=pip_task.pip.id), 303)
 
 
 @app.route("/edit_pip/<pid>")
@@ -404,7 +522,8 @@ def save_pip(pid):
     ).where(Pips.id == pid).execute()
 
     # Let's get the updated information for this PIP
-    data = Pips.select().where(Pips.id == pid).get()
+    data = {}
+    data["pip"] = Pips.select().where(Pips.id == pid).get()
 
     # loaded in a template and sent via HTMX
     return render_template("pip_read.html", data=data)
