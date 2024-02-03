@@ -1,15 +1,9 @@
-<div class="row mb-3">
-  <div class="col-12">
-    <hr>
-  </div>
-</div>
-
 <form autocomplete="off"
       hx-put="/pip/task/{{ data.task.id }}"
       hx-target="#main-content">
 <input type="hidden" name="pid" value="{{ data.task.pip.id }}">
 <div class="row mb-3">
-  <div class="col-3">
+  <div class="col-4">
     <div class="form-floating mb-3">
       <input type="text" class="form-control" id="task"
              name="task" value="{{ data.task.task }}"
@@ -17,28 +11,25 @@
       <label for="floatingInput">{% trans %}Task{% endtrans %}</label>
     </div>
   </div>
-  <div class="col-1"></div>
-  <div class="col-3">
+  <div class="col-4">
     <div class="form-floating mb-3">
       <input type="date" class="form-control" id="due_date"
              name="due_date" max="{{ data.task.pip.end_date }}" value="{{ data.task.due_date }}">
       <label for="floatingInput">{% trans %}Due Date{% endtrans %}</label>
     </div>
   </div>
-  <div class="col-1"></div>
-  <div class="col-3">
+  <div class="col-4">
   </div>
 </div>
 
 <div class="row mb-3">
-  <div class="col-3" x-data="{ progress_value: 0 }">
+  <div class="col-4" x-data="{ progress_value: 0 }">
     <label for="progress" class="form-label">Progress <span x-text="progress_value"></span>%</label>
     <input type="range" class="form-range" id="progress"
            name="progress" value="{{ data.task.progress }}"
            x-model="progress_value">
   </div>
-  <div class="col-1"></div>
-  <div class="col-3">
+  <div class="col-4">
     <div class="form-floating">
       <select class="form-select" id="grade" name="grade" aria-label="Grade for this task">
         <option selected>Choose an option when the task is complete</option>
@@ -49,8 +40,7 @@
       <label for="floatingSelect">Task Grade</label>
     </div>
   </div>
-  <div class="col-1"></div>
-  <div class="col-3 align-middle">
+  <div class="col-4 align-middle">
     <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
       {% trans %}Save Task{% endtrans %}
     </button>

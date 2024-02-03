@@ -3,15 +3,15 @@
     <h1>PIP Details - {{ data.pip.employee.name }}</h1>
   </div>
   <div class="col-3">
-    <button class="btn btn-primary bg-primary-subtle text-white"
+    <button class="btn btn-info bg-info-subtle text-white"
             hx-get="/edit_pip/{{ data.pip.id }}"
             hx-target="#main-content">
-      <i class="bi bi-person-fill-check"></i> Edit Pip
+      <i class="bi bi-person-check"></i> Edit PIP
     </button>
     <button class="btn btn-danger bg-danger-subtle text-white"
             hx-delete="/pip/{{ data.pip.id }}"
             hx-target="#main-content">
-      <i class="bi bi-person-fill-x"></i> Delete Pip
+      <i class="bi bi-person-x"></i> Delete PIP
     </button>
   </div>
 </div>
@@ -60,6 +60,7 @@
     <button class="btn btn-primary bg-primary-subtle text-white"
             hx-get="/pip/new_task/{{ data.pip.id }}"
             hx-target="#new_task_form">
+      <i class="bi bi-person-fill-add"></i>
       {% trans %}New PIP Task{% endtrans %}
     </button>
   </div>
@@ -84,7 +85,7 @@
       <td>{{ task.progress }}%</td>
       <td>{% if not task.grade %}-{% else %}{{ task.grade.name }}{% endif %}</td>
       <td>
-        <button class="btn btn-secondary bg-secondary-subtle text-white"
+        <button class="btn btn-info bg-info-subtle text-white"
                 hx-get="/pip/task/edit/{{ task.id }}" hx-target="#new_task_form">
           <i class="bi bi-pencil"></i> Edit
         </button>

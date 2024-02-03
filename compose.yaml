@@ -13,11 +13,13 @@ services:
       - /home/rogue/source/devocho/qa-practice-platforms/app2:/code
     ports:
       - "8801:5000"
-  #application3:
-    #container_name: qa-test-app-3
-    #build: app3/.
-    #ports:
-      #- "8803:5000"
+  application3:
+    container_name: qa-test-app-3
+    build: app3/.
+    volumes:
+      - /home/rogue/source/devocho/qa-practice-platforms/app3:/code
+    ports:
+      - "8802:5000"
   #db:
     #container_name: qa-test-db
     #image: "mariadb:11.2.2"

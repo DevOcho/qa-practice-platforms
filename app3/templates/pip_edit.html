@@ -1,0 +1,96 @@
+<div class="row">
+  <div class="col-6">
+    <h1>{% trans %}Edit PIP{% endtrans %} - {{ data.pip.employee.name }}</h1>
+  </div>
+</div>
+
+<form hx-put="/pip/{{ data.pip.id }}" hx-target="#main-content" hx-swap="innerHTML" autocomplete="off">
+<div class="row mb-3">
+  <div class="col-3" x-data="{ employee_name: '{{ data.pip.employee.name }}' }">
+    <label for="employee" class="form-label">{% trans %}Employee{% endtrans %}</label>
+    <input type="search"
+           class="form-control"
+           id="employee"
+           name="employee"
+           value="{{ data.pip.employee.name }}"
+           hx-post="/employee_search/employee"
+           hx-trigger="input changed delay:400ms, search"
+           hx-target="#pip-employee"
+           x-model="employee_name" required>
+    <div class="" id="pip-employee" x-data="{ employee_list: true}"></div>
+  </div>
+  <div class="col-3">
+    <label for="start-date" class="form-label">{% trans %}Start Date{% endtrans %}</label>
+    <input type="date" class="form-control"
+           id="start-date" name="start_date" value="{{ data.pip.start_date }}"
+           @change="set90Days();" required>
+  </div>
+  <div class="col-3">
+    <label for="end-date" class="form-label">{% trans %}End Date{% endtrans %}</label>
+    <input type="date" class="form-control" id="end-date" name="end_date" value="{{ data.pip.end_date }}" required>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-3">
+    <label for="pip-status" class="form-label">{% trans %}PIP Status{% endtrans %}</label>
+    <select class="form-select" aria-label="PIP Status" id="pip-status" name="pip_status">
+      {% for status in data.statuses %}
+      <option value="{{ status.id }}" {% if data.pip.status.id == status.id %}selected{% endif %}>{{ status.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-3" x-data="{ manager_name: '{{ data.pip.manager.name }}' }">
+    <label for="manager" class="form-label">{% trans %}Manager{% endtrans %}</label>
+    <input type="search"
+           class="form-control"
+           id="manager"
+           name="manager"
+           value="{{ data.pip.manager.name }}"
+           hx-post="/employee_search/manager"
+           hx-trigger="input changed delay:400ms, search"
+           hx-target="#pip-manager"
+           x-model="manager_name" required>
+    <div class="" id="pip-manager" x-data="{ manager_list: true}"></div>
+  </div>
+  <div class="col-3" x-data="{ hr_name: '{{ data.pip.hr_rep.name }}' }">
+    <label for="hr" class="form-label">{% trans %}HR Representative{% endtrans %}</label>
+    <input type="search"
+           class="form-control"
+           id="hr"
+           name="hr"
+           value="{{ data.pip.hr_rep.name }}"
+           hx-post="/employee_search/hr"
+           hx-trigger="input changed delay:400ms, search"
+           hx-target="#pip-hr"
+           x-model="hr_name" required>
+    <div class="" id="pip-hr" x-data="{ hr_list: true}"></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-9 text-end">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-circle"></i> {% trans %}Submit{% endtrans %}</button>
+    <button class="btn btn-secondary"
+            hx-get="/performance_plans"
+            hx-target="#main-content"><i class="bi bi-x-circle"></i> {% trans %}Cancel{% endtrans %}</button>
+  </div>
+</div>
+</form>
+
+<script>
+  // Add 90 days to whatever was selected for the Start Date
+  Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  }
+
+  function set90Days() {
+    var start_date = document.getElementById("start-date");
+    var end_date_element = document.getElementById("end-date");
+    var end_date = new Date(start_date.value);
+    end_date = end_date.addDays(91);
+    month = String(end_date.getMonth() + 1).padStart(2, '0');
+    day = String(end_date.getDate()).padStart(2, '0');
+    end_date_element.value = end_date.getFullYear() + "-" + month + "-" + day;
+  };
+</script>

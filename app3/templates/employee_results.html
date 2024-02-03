@@ -1,0 +1,18 @@
+{% for employee in data.employees %}
+<div class="card {{ keyword }}_peeps" x-bind:class="{{keyword}}_list ? '' : 'visually-hidden'" x-transtion>
+  <div class="card-body">
+    <a href="#"
+       x-on:click="{{ keyword }}_name = '{{ employee.name }}';
+                   {{ keyword }}_list = ! {{ keyword }}_list"
+    >{{ employee.name }}</a><br>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+// Remove the hidden classes so we can display items
+var elements = document.getElementsByClassName("{{ keyword }}_peeps");
+for (let element of elements) {
+  element.classList.remove("visually-hidden");
+}
+</script>

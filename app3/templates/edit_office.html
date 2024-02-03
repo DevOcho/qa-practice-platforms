@@ -1,0 +1,26 @@
+<tr>
+  <td scope="row" class="align-middle">
+    <form hx-put="/offices/{{ data.id }}"
+          hx-target="closest tr"
+          hx-swap="outerHTML"
+          class="row row-cols-lg-auto mt-2 align-items-center">
+      <div class="col-12">
+        <input type="text"
+               class="form-control"
+               id="office_name"
+               name="office_name"
+               value="{{ data.name }}">
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit" hx-trigger="click">{% trans %}Update{% endtrans %}</button>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-secondary bg-secondary-subtle"
+                hx-get="/offices"
+                hx-target="#main-content"
+                hx-swap="innerHTML">{% trans %}Cancel{% endtrans %}</button>
+      </div>
+    </form>
+  </td>
+  <td class="align-middle"><!-- column left blank on purpose --></td>
+</tr>

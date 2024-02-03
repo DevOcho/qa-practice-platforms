@@ -2,7 +2,7 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-  <title>HR Portal v2</title>
+  <title>HR Portal v3</title>
   <link href="/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/bootstrap-icons.min.css">
   <style>
@@ -18,7 +18,7 @@
 <!-- Navbar -->
 <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><i class="fa-solid fa-dice-one"></i> {% trans %}HR Portal{% endtrans %} v2</a>
+    <a class="navbar-brand" href="/"><i class="fa-solid fa-dice-one"></i> {% trans %}HR Portal{% endtrans %} v3</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -42,7 +42,7 @@
         </a>
       </div>
       <div class="mt-3 ms-2 p-1">
-        <a href="/Departments" hx-get="/departments" hx-target="#main-content"
+        <a href="/departments" hx-get="/departments" hx-target="#main-content"
            class="link-underline link-underline-opacity-0">
              <i class="bi bi-people-fill"></i> {% trans %}Departments{% endtrans %}
         </a>
@@ -53,9 +53,17 @@
              <i class="bi bi-person-lines-fill"></i> {% trans %}Performance Plans{% endtrans %}
         </a>
       </div>
+      <div class="mt-3 ms-2 p-1">
+        <a href="/onboarding/checklist" hx-get="/onboarding/checklist" hx-target="#main-content"
+           class="link-underline link-underline-opacity-0">
+             <i class="bi bi-list-check"></i> {% trans %}Onboarding Checklist{% endtrans %}
+        </a>
+      </div>
     </div>
     <div class="col-10 mt-3">
       <div id="main-content">
+      {% include "error_messages.html" %}
+
       {% include "employee_table.html" %}
       <toaster></toaster>
       </div>

@@ -1,0 +1,36 @@
+<hr>
+<form hx-post="somewhere" hx-target="#main-content">
+<div class="row align-items-center mb-3">
+  <div class="col-4">
+    <div class="form-floating">
+      <input type="text" class="form-control"
+             id="task" name="task"
+             placeholder="Insert the task here">
+      <label for="task">Task</label>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-floating">
+      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+        <option selected disabled value="">Choose Department</option>
+        {% for department in data.departments %}
+        <option value="{{ department.id }}">{{ department.name }}</option>
+        {% endfor %}
+      </select>
+      <label for="floatingSelect">Works with selects</label>
+    </div>
+  </div>
+  <div class="col-4">
+    <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
+      <i class="bi bi-plus-circle"></i> {% trans %}Save Task{% endtrans %}
+    </button>
+    <button type="Cancel"
+            class="btn btn-secondary bg-secondary-subtle text-white"
+            hx-get="/"
+            hx-target="#main-content">
+      <i class="bi bi-x-circle"></i>{% trans %}Cancel{% endtrans %}
+    </button>
+  </div>
+</div>
+</form>
+<hr>

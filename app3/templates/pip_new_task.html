@@ -3,13 +3,15 @@
 <div class="row mb-3">
   <div class="col-4">
     <div class="form-floating mb-3">
-      <input type="text" class="form-control" id="task" name="task" placeholder="{% trans %}Task Description{% endtrans %}">
+      <input type="text" class="form-control" id="task"
+             name="task"
+             placeholder="{% trans %}Task Description{% endtrans %}" required>
       <label for="floatingInput">{% trans %}Task{% endtrans %}</label>
     </div>
   </div>
   <div class="col-4">
     <div class="form-floating mb-3">
-      <input type="date" class="form-control" id="due_date" name="due_date" max="{{ data.pip.end_date }}">
+      <input type="date" class="form-control" id="due_date" name="due_date" max="{{ data.pip.end_date }}" required>
       <label for="floatingInput">{% trans %}Due Date{% endtrans %}</label>
     </div>
   </div>
@@ -20,12 +22,14 @@
 <div class="row mb-3">
   <div class="col-4" x-data="{ progress_value: 0 }">
     <label for="progress" class="form-label">Progress <span x-text="progress_value"></span>%</label>
-    <input type="range" class="form-range" id="progress" name="progress" value="0" x-model="progress_value">
+    <input type="range" class="form-range" id="progress"
+           name="progress" value="0" x-model="progress_value">
   </div>
   <div class="col-4">
     <div class="form-floating">
-      <select class="form-select" id="grade" name="grade" aria-label="Grade for this task">
-        <option selected>Choose an option when the task is complete</option>
+      <select class="form-select" id="grade" name="grade"
+              aria-label="Grade for this task">
+        <option value="" disabled selected>Choose an option</option>
         {% for grade in data.task_grades %}
         <option value="{{ grade.id }}">{{ grade.name }}</option>
         {% endfor %}
@@ -35,10 +39,13 @@
   </div>
   <div class="col-4 align-middle">
     <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
-      {% trans %}Save Task{% endtrans %}
+      <i class="bi bi-plus-circle"></i> {% trans %}Save Task{% endtrans %}
     </button>
-    <button type="Cancel" class="btn btn-secondary bg-secondary-subtle text-white">
-      {% trans %}Cancel{% endtrans %}
+    <button type="Cancel"
+            class="btn btn-secondary bg-secondary-subtle text-white"
+            hx-get="/pip/{{ data.pip.id }}"
+            hx-target="#main-content">
+      <i class="bi bi-x-circle"></i>{% trans %}Cancel{% endtrans %}
     </button>
   </div>
 </div>

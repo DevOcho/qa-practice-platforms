@@ -1,0 +1,11 @@
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="card flashes bg-danger-subtle border-danger text-white mb-3">
+      <div class="card-body">
+        {% trans %}Error{% endtrans %}: {{ message }}
+      </div>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}

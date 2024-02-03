@@ -1,0 +1,26 @@
+<div class="row mb-3">
+  <div class="col-12">
+    <h2>Onboarding Checklists</h2>
+  </div>
+</div>
+
+<div class="row mb-3">
+  <div class="col-12">
+    <form>
+    <label for="department"
+           class="form-label">{% trans %}Department{% endtrans %}</label>
+    <select class="form-select" aria-label="Department" id="department"
+            name="department" required
+            hx-get="/onboarding/checklist/department"
+            hx-trigger="change"
+            hx-target="#dept-checklist">
+      <option value="" disabled selected>Choose department</option>
+    {% for department in data.departments %}
+      <option value="{{ department.id }}">{{ department.name }}</option>
+    {% endfor %}
+    </select>
+    </form>
+  </div>
+</div>
+
+<span id="dept-checklist"></span>
