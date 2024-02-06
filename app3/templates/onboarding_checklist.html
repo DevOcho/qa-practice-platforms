@@ -1,11 +1,11 @@
 <div class="row mb-3">
   <div class="col-12">
-    <h2>Onboarding Checklists</h2>
+    <h1>{% trans %}Onboarding Checklists{% endtrans %}</h1>
   </div>
 </div>
 
 <div class="row mb-3">
-  <div class="col-12">
+  <div class="col-6">
     <form>
     <label for="department"
            class="form-label">{% trans %}Department{% endtrans %}</label>
@@ -14,10 +14,10 @@
             hx-get="/onboarding/checklist/department"
             hx-trigger="change"
             hx-target="#dept-checklist">
-      <option value="" disabled selected>Choose department</option>
-    {% for department in data.departments %}
+      <option value="" disabled selected>{% trans %}Choose department{% endtrans %}</option>
+      {% for department in data.departments %}
       <option value="{{ department.id }}">{{ department.name }}</option>
-    {% endfor %}
+      {% endfor %}
     </select>
     </form>
   </div>

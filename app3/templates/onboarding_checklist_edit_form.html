@@ -1,0 +1,43 @@
+<hr>
+<form hx-put="/onboarding/checklist/{{ data.task.id }}"
+      hx-target="#dept-checklist">
+<input type="hidden" name="department" value="{{ data.task.department }}">
+<input type="hidden" name="timeframe" value="{{ data.task.timeframe }}">
+<div class="row align-items-center mb-3">
+  <div class="col-4">
+    <div class="form-floating">
+      <input type="text" class="form-control"
+             id="task" name="task" value="{{ data.task.task }}"
+             placeholder="{% trans %}Insert the task here{% endtrans %}">
+      <label for="task">{% trans %}Task{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="form-floating">
+      <select class="form-select"
+              id="task_department"
+              name="task_department"
+              aria-label="Task Department">
+        {% for department in data.departments %}
+        <option value="{{ department.id }}" {% if data.task.assigned_department.id == department.id %}selected{% endif %}>
+          {{ department.name }}
+        </option>
+        {% endfor %}
+      </select>
+      <label for="task_department">{% trans %}Task Department{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="col-4">
+    <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
+      <i class="bi bi-plus-circle"></i> {% trans %}Save Task{% endtrans %}
+    </button>
+    <a href="#"
+       hx-get="/onboarding/checklist/department?department={{ data.task.department.id }}"
+       hx-target="#dept-checklist"
+       class="btn btn-secondary bg-secondary-subtle text-white">
+      <i class="bi bi-x-circle"></i>{% trans %}Cancel{% endtrans %}
+    </a>
+  </div>
+</div>
+</form>
+<hr>

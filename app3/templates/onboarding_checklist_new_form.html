@@ -1,5 +1,7 @@
 <hr>
-<form hx-post="somewhere" hx-target="#main-content">
+<form hx-post="/onboarding/checklist" hx-target="#dept-checklist">
+<input type="hidden" name="department" value="{{ data.department }}">
+<input type="hidden" name="timeframe" value="{{ data.timeframe }}">
 <div class="row align-items-center mb-3">
   <div class="col-4">
     <div class="form-floating">
@@ -11,13 +13,16 @@
   </div>
   <div class="col-4">
     <div class="form-floating">
-      <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+      <select class="form-select"
+              id="task_department"
+              name="task_department"
+              aria-label="Task Department">
         <option selected disabled value="">Choose Department</option>
         {% for department in data.departments %}
         <option value="{{ department.id }}">{{ department.name }}</option>
         {% endfor %}
       </select>
-      <label for="floatingSelect">Works with selects</label>
+      <label for="floatingSelect">Task Department</label>
     </div>
   </div>
   <div class="col-4">

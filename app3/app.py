@@ -18,6 +18,7 @@ from model import (
     Departments,
     Offices,
     OnboardingChecklists,
+    OnboardingEmployeeChecklists,
     Pips,
     PipStatuses,
     PipTaskGrades,
@@ -99,11 +100,20 @@ def save_employee():
     office = request.form.get("office")
 
     # Let's save the employee in the database
-    Employees.create(
+    employee = Employees.create(
         name=name, years=int(years), status=status, office=office, department=department
     )
 
-    # Send them back to the employee table
+    # Now let's create the onboarding checklist for this employee
+    # We need to pull the list for this department and then copy it into the
+    # employee list
+    checklist = OnboardingChecklists.select().where(OnboardingChecklists.department == department)
+
+    # Create the checklist for the employee from the department list
+    for task in checklist:
+        OnboardingEmployeeChecklists.create(task=task.task, timeframe=task.timeframe, employee=employee, department=department, status="to-do")
+
+    # Send the user back to the employee table so they can see the new employee
     return redirect(url_for("employee_table"))
 
 
@@ -620,17 +630,40 @@ def onboarding_checklist_department():
 
     # local vars
     data = {}
+    data["tasks"] = {}
 
     # Let's retrieve the checklist for the request department
-    dept_id = request.form.get("department")
-    checklist = OnboardingChecklists.select().where(OnboardingChecklists.department == dept_id)
+    data["department"] = request.args.get("department")
+    checklist = OnboardingChecklists.select().where(OnboardingChecklists.department == data["department"])
+
+    # I need to break the checklist down into timeframes
+    for task in checklist:
+        if not task.timeframe in data["tasks"]:
+            data["tasks"][task.timeframe] = []
+        data["tasks"][str(task.timeframe)].append(task)
 
     # loaded in a template and sent via HTMX
     return render_template("onboarding_department_checklist.html", data=data)
 
 
-@app.route("/onboarding/checklist/new/form")
-def onboarding_checklist_new_form():
+@app.route("/onboarding/checklist/new/form/<dept_id>/<timeframe>")
+def onboarding_checklist_new_form(dept_id, timeframe):
+    """Onboarding checklist new task form"""
+
+    # local vars
+    data = {}
+    data["department"] = dept_id
+    data["timeframe"] = timeframe
+
+    # Get the departments
+    data["departments"] = Departments.select()
+
+    # loaded in a template and sent via HTMX
+    return render_template("onboarding_checklist_new_form.html", data=data)
+
+
+@app.route("/onboarding/checklist/task/edit/<tid>")
+def onboarding_checklist_edit_form(tid):
     """Onboarding checklist new task form"""
 
     # local vars
@@ -639,5 +672,82 @@ def onboarding_checklist_new_form():
     # Get the departments
     data["departments"] = Departments.select()
 
+    # Get the task we are editing
+    data["task"] = (OnboardingChecklists.select()
+                                        .where(OnboardingChecklists.id == tid)).get()
+
     # loaded in a template and sent via HTMX
-    return render_template("onboarding_checklist_new_form.html", data=data)
+    return render_template("onboarding_checklist_edit_form.html", data=data)
+
+
+@app.route("/onboarding/checklist", methods=["POST"])
+def onboarding_checklist_save():
+    """Save an onboarding checklist task"""
+
+    # Get the values from the form
+    task = request.form.get("task")
+    department = request.form.get("department")
+    timeframe = request.form.get("timeframe")
+    task_department = request.form.get("task_department")
+
+    # Save it to the database
+    OnboardingChecklists.create(task=task, department=department, timeframe=timeframe, assigned_department=task_department)
+
+    # send them back to their chosen checklist
+    return redirect(url_for("onboarding_checklist_department", department=department))
+
+
+@app.route("/onboarding/checklist/<tid>", methods=["PUT"])
+def onboarding_checklist_update(tid):
+    """Update an onboarding checklist task"""
+
+    # Get the values from the form
+    task = request.form.get("task")
+    department = request.form.get("department")
+    timeframe = request.form.get("timeframe")
+    task_department = request.form.get("task_department")
+
+    # Save it to the database
+    (OnboardingChecklists.update({"task": task,
+                                 "department": department,
+                                 "timeframe": timeframe,
+                                 "assigned_department": task_department})
+                         .where(OnboardingChecklists.id == tid).execute())
+
+    # send them back to their chosen checklist
+    return redirect(url_for("onboarding_checklist_department", department=department), 303)
+
+
+@app.route("/onboarding/checklist/<dept_id>/task/<tid>", methods=["DELETE"])
+def onboarding_checklist_delete(dept_id, tid):
+    """Delete an onboarding checklist task"""
+
+    # Let's delete the requested task
+    OnboardingChecklists.delete().where(OnboardingChecklists.id == tid).execute()
+
+    # send them back to their chosen checklist
+    return redirect(url_for("onboarding_checklist_department", department=dept_id), 303)
+
+
+
+@app.route("/onboarding/checklist/employee/<eid>")
+def onboarding_checklist_employee(eid):
+    """Onboarding checklist for an employee"""
+
+    # local vars
+    data = {}
+    data["tasks"] = {}
+
+    # Let's retrieve the checklist for the request department
+    checklist = OnboardingEmployeeChecklists.select().where(OnboardingEmployeeChecklists.employee == eid)
+
+    # I need to break the checklist down into timeframes
+    for task in checklist:
+        if not task.timeframe in data["tasks"]:
+            data["tasks"][task.timeframe] = []
+        data["tasks"][str(task.timeframe)].append(task)
+
+    current_app.logger.debug(data)
+
+    # loaded in a template and sent via HTMX
+    return render_template("onboarding_employee_checklist.html", data=data)

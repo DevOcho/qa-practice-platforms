@@ -94,7 +94,7 @@ class OnboardingChecklists(BaseModel):
     """The default employee onboarding checklist for a department"""
 
     task = CharField()
-    timeframe = CharField()  # one of: pre-start, first-30, second-30, third-30
+    timeframe = CharField()  # one of: prestart, first30, second30, third30
     department = ForeignKeyField(Departments, backref="department")  # department checklist
     assigned_department = ForeignKeyField(Departments, backref="department")  # dartment task
 
@@ -103,8 +103,8 @@ class OnboardingEmployeeChecklists(BaseModel):
     """The list of tasks to onboard an employee"""
 
     task = CharField()
-    timeframe = CharField()  # one of: pre-start, first-30, second-30, third-30
+    timeframe = CharField()  # one of: prestart, first30, second30, third30
     employee = ForeignKeyField(Employees, backref="employees")  # list is for this employee
-    assigned_employee = ForeignKeyField(Employees, backref="employees")  # task for this employee
+    assigned_employee = ForeignKeyField(Employees, backref="employees", null=True)  # task for this employee
     department = ForeignKeyField(Departments, backref="department")
     status = CharField()  # one of: to-do, in-progress, done

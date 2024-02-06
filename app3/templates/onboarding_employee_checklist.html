@@ -1,4 +1,11 @@
-<div id="dept-checklist">
+<div id="employee-checklist">
+
+<div class="row">
+  <div class="col-12">
+    {% trans %}Employee Onboarding{% endtrans %} - {% if "prestart" in data.tasks%}{{ data.tasks.prestart[0].employee.name }}{% endif %}
+  </div>
+</div>
+
 <div class="row">
   <div class="col-9">
   <h2>{% trans %}Pre-Start{% endtrans %}</h2>
@@ -26,7 +33,7 @@
       {% for task in data.tasks.prestart %}
       <tr>
         <th scope="row">{{ task.task }}</th>
-        <td>{{ task.assigned_department.name }}</td>
+        <td>{{ task.department.name }}</td>
         <td>
           <button class="btn btn-sm btn-info bg-info-subtle text-white"
                   hx-get="/onboarding/checklist/task/edit/{{ task.id }}"
@@ -36,7 +43,7 @@
           <button class="btn btn-sm btn-danger bg-danger-subtle text-white"
                   hx-delete="/onboarding/checklist/{{ task.department.id }}/task/{{ task.id }}"
                   hx-confirm="{% trans %}Are you sure?{% endtrans %}"
-                  hx-target="#dept-checklist">
+                  hx-target="#employee-checklist">
             <i class="bi bi-trash"></i> {% trans %}Delete{% endtrans %}
           </button>
         </td>
@@ -75,7 +82,7 @@
       {% for task in data.tasks.first30 %}
       <tr>
         <th scope="row">{{ task.task }}</th>
-        <td>{{ task.assigned_department.name }}</td>
+        <td>{{ task.department.name }}</td>
         <td>
           <button class="btn btn-sm btn-info bg-info-subtle text-white"
                   hx-get="/onboarding/checklist/task/edit/{{ task.id }}"
@@ -85,7 +92,7 @@
           <button class="btn btn-sm btn-danger bg-danger-subtle text-white"
                   hx-delete="/onboarding/checklist/{{ task.department.id }}/task/{{ task.id }}"
                   hx-confirm="{% trans %}Are you sure?{% endtrans %}"
-                  hx-target="#dept-checklist">
+                  hx-target="#employee-checklist">
             <i class="bi bi-trash"></i> {% trans %}Delete{% endtrans %}
           </button>
         </td>
@@ -124,7 +131,7 @@
       {% for task in data.tasks.second30 %}
       <tr>
         <th scope="row">{{ task.task }}</th>
-        <td>{{ task.assigned_department.name }}</td>
+        <td>{{ task.department.name }}</td>
         <td>
           <button class="btn btn-sm btn-info bg-info-subtle text-white"
                   hx-get="/onboarding/checklist/task/edit/{{ task.id }}"
@@ -134,7 +141,7 @@
           <button class="btn btn-sm btn-danger bg-danger-subtle text-white"
                   hx-delete="/onboarding/checklist/{{ task.department.id }}/task/{{ task.id }}"
                   hx-confirm="{% trans %}Are you sure?{% endtrans %}"
-                  hx-target="#dept-checklist">
+                  hx-target="#employee-checklist">
             <i class="bi bi-trash"></i> {% trans %}Delete{% endtrans %}
           </button>
         </td>
@@ -173,7 +180,7 @@
       {% for task in data.tasks.third30 %}
       <tr>
         <th scope="row">{{ task.task }}</th>
-        <td>{{ task.assigned_department.name }}</td>
+        <td>{{ task.department.name }}</td>
         <td>
           <button class="btn btn-sm btn-info bg-info-subtle text-white"
                   hx-get="/onboarding/checklist/task/edit/{{ task.id }}"
@@ -183,7 +190,7 @@
           <button class="btn btn-sm btn-danger bg-danger-subtle text-white"
                   hx-delete="/onboarding/checklist/{{ task.department.id }}/task/{{ task.id }}"
                   hx-confirm="{% trans %}Are you sure?{% endtrans %}"
-                  hx-target="#dept-checklist">
+                  hx-target="#employee-checklist">
             <i class="bi bi-trash"></i> {% trans %}Delete{% endtrans %}
           </button>
         </td>

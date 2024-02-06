@@ -16,7 +16,7 @@
 <body hx-boost="true">
 
 <!-- Navbar -->
-<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+<nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark" role="navigation">
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><i class="fa-solid fa-dice-one"></i> {% trans %}HR Portal{% endtrans %} v3</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@
   <div class="row side-nav">
     <!-- Side Navigation -->
     <div class="col-2 bg-dark-subtle text-emphasis-dark p-2">
+      <nav id="side-nav" aria-label="side navigation bar">
       <div class="mt-3 ms-2 p-1" hx-boost="true">
         <a href="/"
            class="link-underline link-underline-opacity-0">
@@ -59,9 +60,10 @@
              <i class="bi bi-list-check"></i> {% trans %}Onboarding Checklist{% endtrans %}
         </a>
       </div>
+      </nav>
     </div>
     <div class="col-10 mt-3">
-      <div id="main-content">
+      <div id="main-content" role="main">
       {% include "error_messages.html" %}
 
       {% include "employee_table.html" %}
