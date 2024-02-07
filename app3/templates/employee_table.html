@@ -40,7 +40,7 @@
       <td class="align-middle">{{ employee.status.name }}</td>
       <td class="align-middle">
          <button class="btn btn-sm btn-info bg-info-subtle text-white"
-                 hx-get="/onboarding/checklist/employee/{{ employee.id }}"
+                 hx-get="/employee/onboarding/checklist/{{ employee.id }}"
                  hx-target="#main-content">
            <i class="bi bi-person-check-fill"></i> {% trans %}Onboarding{% endtrans %}
          </button>

@@ -1,0 +1,71 @@
+<hr>
+<form hx-put="/employee/onboarding/checklist/{{ data.task.id }}"
+      hx-target="#employee-checklist"
+      autocomplete="off">
+<input type="hidden" name="timeframe" value="{{ data.task.timeframe }}">
+<div class="row align-items-center mb-3">
+  <div class="col-3">
+    <div class="form-floating">
+      <input type="text" class="form-control"
+             id="task" name="task" value="{{ data.task.task }}"
+             placeholder="Insert the task here" required>
+      <label for="task">Task</label>
+    </div>
+  </div>
+  <div class="col-3" x-data="{ assigned_employee_name: '{{ data.task.assigned_employee.name }}' }">
+    <div class="form-floating">
+      <input type="search" class="form-control"
+             id="assigned-employee" name="assigned_employee"
+             hx-post="/employee_search/assigned_employee"
+             hx-trigger="input changed delay:400ms, search"
+             hx-target="#employee_list"
+             x-model="assigned_employee_name"
+             value="{{ data.task.assigned_employee.name }}" required>
+      <label for="task">{% trans %}Assigned To{% endtrans %}</label>
+      <div class="" id="employee_list" x-data="{ assigned_employee_list: true}"></div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-floating">
+      <select class="form-select"
+              id="task_department"
+              name="task_department"
+              aria-label="Task Department">
+        {% for department in data.departments %}
+        <option value="{{ department.id }}" {% if data.task.department.id == department.id %}selected{% endif %}>
+          {{ department.name }}
+        </option>
+        {% endfor %}
+      </select>
+      <label for="floatingSelect">{% trans %}Task Department{% endtrans %}</label>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="form-floating">
+      <select class="form-select"
+              id="status"
+              name="status"
+              aria-label="Status">
+        <option value="to-do" {% if data.task.status=="to-do" %}selected{% endif %}>To Do</option>
+        <option value="in-progress" {% if data.task.status=="in-progress" %}selected{% endif %}>In Progress</option>
+        <option value="done" {% if data.task.status=="done" %}selected{% endif %}>Done</option>
+      </select>
+      <label for="floatingSelect">{% trans %}Status{% endtrans %}</label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 text-end">
+    <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
+      <i class="bi bi-plus-circle"></i> {% trans %}Save Task{% endtrans %}
+    </button>
+    <button type="Cancel"
+            class="btn btn-secondary bg-secondary-subtle text-white"
+            hx-get="/employee/onboarding/checklist/{{ data.task.employee.id }}"
+            hx-target="#main-content">
+      <i class="bi bi-x-circle"></i>{% trans %}Cancel{% endtrans %}
+    </button>
+  </div>
+</div>
+</form>
+<hr>

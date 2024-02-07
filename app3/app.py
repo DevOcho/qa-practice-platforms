@@ -13,12 +13,12 @@ from playhouse.shortcuts import model_to_dict
 
 from model import (
     db,
+    Departments,
+    EmployeeOnboardingChecklists,
     EmployeeStatuses,
     Employees,
-    Departments,
     Offices,
     OnboardingChecklists,
-    OnboardingEmployeeChecklists,
     Pips,
     PipStatuses,
     PipTaskGrades,
@@ -107,11 +107,19 @@ def save_employee():
     # Now let's create the onboarding checklist for this employee
     # We need to pull the list for this department and then copy it into the
     # employee list
-    checklist = OnboardingChecklists.select().where(OnboardingChecklists.department == department)
+    checklist = OnboardingChecklists.select().where(
+        OnboardingChecklists.department == department
+    )
 
     # Create the checklist for the employee from the department list
     for task in checklist:
-        OnboardingEmployeeChecklists.create(task=task.task, timeframe=task.timeframe, employee=employee, department=department, status="to-do")
+        OnboardingEmployeeChecklists.create(
+            task=task.task,
+            timeframe=task.timeframe,
+            employee=employee,
+            department=department,
+            status="to-do",
+        )
 
     # Send the user back to the employee table so they can see the new employee
     return redirect(url_for("employee_table"))
@@ -364,8 +372,6 @@ def create_pip():
     manager = request.form.get("manager")
     hr_rep = request.form.get("hr")
 
-    current_app.logger.debug(status)
-
     # Verify that they submitted actual values
     if not employee or not manager or not hr_rep:
         flash("No person selected")
@@ -500,7 +506,6 @@ def update_pip_task(tid):
     PipTasks.update(update_record).where(PipTasks.id == tid).execute()
 
     # Send them back to the PIP details
-    current_app.logger.debug(url_for("read_pip", pid=pid))
     return redirect(url_for("read_pip", pid=pid), 303)
 
 
@@ -592,7 +597,6 @@ def delete_pip(pid):
     return redirect(url_for("performance_plans_browse"), 303)
 
 
-# Helper functions =============================================================
 @app.route("/employee_search/<keyword>", methods=["POST"])
 def employee_search(keyword):
     """HTMX powered: Return a list of employee names"""
@@ -610,6 +614,7 @@ def employee_search(keyword):
     return render_template("employee_results.html", data=data, keyword=keyword)
 
 
+# Onboarding Checklists ========================================================
 @app.route("/onboarding/checklist")
 def onboarding_checklist():
     """Onboarding checklist templates"""
@@ -634,7 +639,9 @@ def onboarding_checklist_department():
 
     # Let's retrieve the checklist for the request department
     data["department"] = request.args.get("department")
-    checklist = OnboardingChecklists.select().where(OnboardingChecklists.department == data["department"])
+    checklist = OnboardingChecklists.select().where(
+        OnboardingChecklists.department == data["department"]
+    )
 
     # I need to break the checklist down into timeframes
     for task in checklist:
@@ -673,8 +680,9 @@ def onboarding_checklist_edit_form(tid):
     data["departments"] = Departments.select()
 
     # Get the task we are editing
-    data["task"] = (OnboardingChecklists.select()
-                                        .where(OnboardingChecklists.id == tid)).get()
+    data["task"] = (
+        OnboardingChecklists.select().where(OnboardingChecklists.id == tid)
+    ).get()
 
     # loaded in a template and sent via HTMX
     return render_template("onboarding_checklist_edit_form.html", data=data)
@@ -691,7 +699,12 @@ def onboarding_checklist_save():
     task_department = request.form.get("task_department")
 
     # Save it to the database
-    OnboardingChecklists.create(task=task, department=department, timeframe=timeframe, assigned_department=task_department)
+    OnboardingChecklists.create(
+        task=task,
+        department=department,
+        timeframe=timeframe,
+        assigned_department=task_department,
+    )
 
     # send them back to their chosen checklist
     return redirect(url_for("onboarding_checklist_department", department=department))
@@ -708,14 +721,23 @@ def onboarding_checklist_update(tid):
     task_department = request.form.get("task_department")
 
     # Save it to the database
-    (OnboardingChecklists.update({"task": task,
-                                 "department": department,
-                                 "timeframe": timeframe,
-                                 "assigned_department": task_department})
-                         .where(OnboardingChecklists.id == tid).execute())
+    (
+        OnboardingChecklists.update(
+            {
+                "task": task,
+                "department": department,
+                "timeframe": timeframe,
+                "assigned_department": task_department,
+            }
+        )
+        .where(OnboardingChecklists.id == tid)
+        .execute()
+    )
 
     # send them back to their chosen checklist
-    return redirect(url_for("onboarding_checklist_department", department=department), 303)
+    return redirect(
+        url_for("onboarding_checklist_department", department=department), 303
+    )
 
 
 @app.route("/onboarding/checklist/<dept_id>/task/<tid>", methods=["DELETE"])
@@ -729,17 +751,22 @@ def onboarding_checklist_delete(dept_id, tid):
     return redirect(url_for("onboarding_checklist_department", department=dept_id), 303)
 
 
-
-@app.route("/onboarding/checklist/employee/<eid>")
-def onboarding_checklist_employee(eid):
+# Employee Onboarding ==========================================================
+@app.route("/employee/onboarding/checklist/<eid>")
+def employee_onboarding_checklist(eid):
     """Onboarding checklist for an employee"""
 
     # local vars
     data = {}
     data["tasks"] = {}
 
-    # Let's retrieve the checklist for the request department
-    checklist = OnboardingEmployeeChecklists.select().where(OnboardingEmployeeChecklists.employee == eid)
+    # Let's get this employee's data
+    data["employee"] = Employees.select().where(Employees.id == eid).get()
+
+    # Let's retrieve the checklist for the requested employee
+    checklist = EmployeeOnboardingChecklists.select().where(
+        EmployeeOnboardingChecklists.employee == eid
+    )
 
     # I need to break the checklist down into timeframes
     for task in checklist:
@@ -747,7 +774,115 @@ def onboarding_checklist_employee(eid):
             data["tasks"][task.timeframe] = []
         data["tasks"][str(task.timeframe)].append(task)
 
+    # loaded in a template and sent via HTMX
+    return render_template("employee_onboarding_checklist.html", data=data)
+
+
+@app.route("/employee/onboarding/new/form/<eid>/<timeframe>")
+def employee_onboarding_new_task_form(eid, timeframe):
+    """Employee Onboarding checklist new task form"""
+
+    # local vars
+    data = {}
+    data["employee"] = eid
+    data["timeframe"] = timeframe
+
+    # Get the departments
+    data["departments"] = Departments.select()
+
+    # loaded in a template and sent via HTMX
+    return render_template("employee_onboarding_checklist_new_form.html", data=data)
+
+
+@app.route("/employee/onboarding/task/edit/<tid>/")
+def employee_onboarding_edit_task_form(tid):
+    """Employee Onboarding checklist edit task form"""
+
+    # local vars
+    data = {}
+
+    # Get the task
+    data["task"] = (
+        EmployeeOnboardingChecklists.select()
+        .where(EmployeeOnboardingChecklists.id == tid)
+        .get()
+    )
+
+    # Get the departments
+    data["departments"] = Departments.select()
+
     current_app.logger.debug(data)
 
     # loaded in a template and sent via HTMX
-    return render_template("onboarding_employee_checklist.html", data=data)
+    return render_template("employee_onboarding_checklist_edit_form.html", data=data)
+
+
+@app.route("/employee/onboarding/checklist/<eid>", methods=["POST"])
+def employee_onboarding_checklist_task_create(eid):
+    """Creates an Employee Onboarding Task"""
+
+    # Get the values from the form
+    task = request.form.get("task")
+    timeframe = request.form.get("timeframe")
+    assigned_employee = request.form.get("assigned_employee")
+    department = request.form.get("task_department")
+    status = "to-do"
+
+    # I need to convert the assigned employee into an ID
+    employee = Employees.select().where(Employees.name == assigned_employee).get()
+
+    # Save the task
+    EmployeeOnboardingChecklists.create(
+        task=task,
+        timeframe=timeframe,
+        employee=eid,
+        assigned_employee=employee,
+        department=department,
+        status=status,
+    )
+
+    return redirect(url_for("employee_onboarding_checklist", eid=eid), 303)
+
+
+@app.route("/employee/onboarding/checklist/<tid>", methods=["PUT"])
+def employee_onboarding_checklist_task_update(tid):
+    """Updates an Employee Onboarding Task"""
+
+    # Get the values from the form
+    task = request.form.get("task")
+    timeframe = request.form.get("timeframe")
+    assigned_employee = request.form.get("assigned_employee")
+    department = request.form.get("task_department")
+    status = request.form.get("status")
+
+    # I need to convert the assigned employee into an employee with an id
+    db_assigned_employee = Employees.select().where(Employees.name == assigned_employee).get()
+
+    # I need to know which employee this task is for
+    db_task = EmployeeOnboardingChecklists.select().where(EmployeeOnboardingChecklists.id == tid).get()
+
+    # Save the task
+    EmployeeOnboardingChecklists.update(
+        {
+            "task": task,
+            "timeframe": timeframe,
+            "assigned_employee": db_assigned_employee,
+            "department": department,
+            "status": status,
+        }
+    ).where(EmployeeOnboardingChecklists.id == tid).execute()
+
+    return redirect(url_for("employee_onboarding_checklist", eid=db_task.employee.id), 303)
+
+
+@app.route("/employee/onboarding/checklist/task/<tid>", methods=["DELETE"])
+def employee_onboarding_checklist_task_delete(tid):
+    """Delete a task from an employee onboarding checklist"""
+
+    # I need to know which employee this task is for
+    db_task = EmployeeOnboardingChecklists.select().where(EmployeeOnboardingChecklists.id == tid).get()
+
+    # Now I can delete it
+    EmployeeOnboardingChecklists.delete().where(EmployeeOnboardingChecklists.id == tid).execute()
+
+    return redirect(url_for("employee_onboarding_checklist", eid=db_task.employee.id), 303)

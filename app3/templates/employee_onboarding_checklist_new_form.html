@@ -1,17 +1,30 @@
 <hr>
-<form hx-post="/onboarding/checklist" hx-target="#dept-checklist">
-<input type="hidden" name="department" value="{{ data.department }}">
+<form hx-post="/employee/onboarding/checklist/{{ data.employee }}"
+      hx-target="#employee-checklist"
+      autocomplete="off">
 <input type="hidden" name="timeframe" value="{{ data.timeframe }}">
 <div class="row align-items-center mb-3">
-  <div class="col-4">
+  <div class="col-3">
     <div class="form-floating">
       <input type="text" class="form-control"
              id="task" name="task"
-             placeholder="{% trans %}Insert the task here{% endtrans %}">
-      <label for="task">{% trans %}Task{% endtrans %}</label>
+             placeholder="Insert the task here" required>
+      <label for="task">Task</label>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-3" x-data="{ assigned_employee_name: '' }">
+    <div class="form-floating">
+      <input type="search" class="form-control"
+             id="assigned-employee" name="assigned_employee"
+             hx-post="/employee_search/assigned_employee"
+             hx-trigger="input changed delay:400ms, search"
+             hx-target="#employee_list"
+             x-model="assigned_employee_name" required>
+      <label for="task">{% trans %}Assigned To{% endtrans %}</label>
+      <div class="" id="employee_list" x-data="{ assigned_employee_list: true}"></div>
+    </div>
+  </div>
+  <div class="col-3">
     <div class="form-floating">
       <select class="form-select"
               id="task_department"
@@ -25,13 +38,13 @@
       <label for="floatingSelect">{% trans %}Task Department{% endtrans %}</label>
     </div>
   </div>
-  <div class="col-4">
+  <div class="col-3">
     <button type="submit" class="btn btn-primary bg-primary-subtle text-white">
       <i class="bi bi-plus-circle"></i> {% trans %}Save Task{% endtrans %}
     </button>
     <button type="Cancel"
             class="btn btn-secondary bg-secondary-subtle text-white"
-            hx-get="/"
+            hx-get="/employee/onboarding/checklist/{{ data.employee }}"
             hx-target="#main-content">
       <i class="bi bi-x-circle"></i>{% trans %}Cancel{% endtrans %}
     </button>

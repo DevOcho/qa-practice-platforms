@@ -91,6 +91,11 @@
         </td>
       </tr>
       {% endfor %}
+      {% if not data.tasks.first30 %}
+      <tr>
+        <th scope="row" colspan=3>{% trans %}No tasks for this section{% endtrans %}</th>
+      </tr>
+      {% endif %}
     </tbody>
     </table>
   </div>
@@ -140,6 +145,11 @@
         </td>
       </tr>
       {% endfor %}
+      {% if not data.tasks.second30 %}
+      <tr>
+        <th scope="row" colspan=3>{% trans %}No tasks for this section{% endtrans %}</th>
+      </tr>
+      {% endif %}
     </tbody>
     </table>
   </div>
@@ -189,6 +199,11 @@
         </td>
       </tr>
       {% endfor %}
+      {% if not data.tasks.third30 %}
+      <tr>
+        <th scope="row" colspan=3>{% trans %}No tasks for this section{% endtrans %}</th>
+      </tr>
+      {% endif %}
     </tbody>
     </table>
   </div>

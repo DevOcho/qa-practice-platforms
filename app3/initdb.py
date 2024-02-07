@@ -6,11 +6,11 @@ import os
 from model import (
     db,
     Departments,
+    EmployeeOnboardingChecklists,
     EmployeeStatuses,
     Employees,
     Offices,
     OnboardingChecklists,
-    OnboardingEmployeeChecklists,
     PipStatuses,
     Pips,
     PipTaskGrades,
@@ -29,7 +29,7 @@ print("Initializing the Database")
 db.connect()
 
 # Create the tables
-print("  - Building Tables...".ljust(40), end="")
+print("  - Building Tables...".ljust(50), end="")
 db.create_tables(
     [
         Departments,
@@ -41,14 +41,14 @@ db.create_tables(
         PipTaskGrades,
         PipTasks,
         OnboardingChecklists,
-        OnboardingEmployeeChecklists
+        EmployeeOnboardingChecklists
     ]
 )
 print(" done")
 
 
 # => Offices ------------------------------------------------------------------
-print("  - Creating Offices...".ljust(40), end="")
+print("  - Creating Offices...".ljust(50), end="")
 offices = [
     {"name": "Santiago"},
     {"name": "Moca"},
@@ -68,7 +68,7 @@ print(" done")
 
 
 # => Departments --------------------------------------------------------------
-print("  - Creating Departments...".ljust(40), end="")
+print("  - Creating Departments...".ljust(50), end="")
 departments = [
     {"name": "Human Resources"},
     {"name": "Legal"},
@@ -86,7 +86,7 @@ print(" done")
 
 
 # => Employee Statuses --------------------------------------------------------
-print("  - Creating Employee Statuses...".ljust(40), end="")
+print("  - Creating Employee Statuses...".ljust(50), end="")
 employee_statuses = [
     {"name": "Hired - Not Onboarded"},
     {"name": "Employed"},
@@ -101,7 +101,7 @@ print(" done")
 
 
 # => PIP Statuses -------------------------------------------------------------
-print("  - Creating PIP Statuses...".ljust(40), end="")
+print("  - Creating PIP Statuses...".ljust(50), end="")
 pip_statuses = [
     {"name": "Proposed"},
     {"name": "In Progress"},
@@ -115,7 +115,7 @@ with db.atomic():
 print(" done")
 
 # => PIP Task Grades ----------------------------------------------------------
-print("  - Creating PIP Task Grades...".ljust(40), end="")
+print("  - Creating PIP Task Grades...".ljust(50), end="")
 pip_task_grades = [
     {"name": "A+"},
     {"name": "A"},

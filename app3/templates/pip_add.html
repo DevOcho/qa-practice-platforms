@@ -33,7 +33,7 @@
   <div class="col-3">
     <label for="pip-status" class="form-label">{% trans %}PIP Status{% endtrans %}</label>
     <select class="form-select" aria-label="PIP Status" id="pip-status" name="pip_status" required>
-      <option value="" disabled selected>Select status</option>
+      <option value="" disabled selected>{% trans %}Select status{% endtrans %}</option>
       {% for status in data.statuses %}
       <option value="{{ status.id }}">{{ status.name }}</option>
       {% endfor %}

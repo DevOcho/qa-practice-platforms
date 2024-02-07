@@ -1,6 +1,9 @@
-NOTE: There are intentional bugs in this code
+In this version we are adding the Employee Onboarding features
+
+NOTE: There are intentional bugs in this code.  Copy this code at your own risk!
 
 For Example,
- - The "cancel" button on the form to create PIP Tasks is a submit button
- - There is no form validation in the system at this version so a lot of
-   things can be entered incorrectly
+  - The blank slate design is missing in the "Third 30" days section of the employee onboarding checklists
+  - It's also missing on the "Pre-Start" section of the Onboarding Checklists
+
+There are other bugs and I don't want to list here to keep the information a bit secrete from the QA Students.

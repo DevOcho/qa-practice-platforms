@@ -99,7 +99,7 @@ class OnboardingChecklists(BaseModel):
     assigned_department = ForeignKeyField(Departments, backref="department")  # dartment task
 
 
-class OnboardingEmployeeChecklists(BaseModel):
+class EmployeeOnboardingChecklists(BaseModel):
     """The list of tasks to onboard an employee"""
 
     task = CharField()
