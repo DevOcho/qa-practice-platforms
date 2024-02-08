@@ -39,6 +39,31 @@ print(" done")
 # => Onboading Checklists ------------------------------------------------------
 print("  - Creating Onboarding Checklists...".ljust(50), end="")
 checklists = [
+    # Executive Tasks (these are first to make a bug more obvious)
+    {
+        "task": "Welcome Gift Basket",
+        "timeframe": "prestart",
+        "department": 7,
+        "assigned_department": 1,
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "department": 7,
+        "assigned_department": 1,
+    },
+    {
+        "task": "USA Office Visit",
+        "timeframe": "second30",
+        "department": 7,
+        "assigned_department": 7,
+    },
+    {
+        "task": "Customer Site Visit",
+        "timeframe": "third30",
+        "department": 7,
+        "assigned_department": 7,
+    },
     # HR Tasks
     {
         "task": "Welcome Email",
@@ -129,31 +154,6 @@ checklists = [
         "assigned_department": 1,
     },
 
-    # Executive Tasks
-    {
-        "task": "Welcome Gift Basket",
-        "timeframe": "prestart",
-        "department": 7,
-        "assigned_department": 1,
-    },
-    {
-        "task": "Office Tour",
-        "timeframe": "first30",
-        "department": 7,
-        "assigned_department": 1,
-    },
-    {
-        "task": "USA Office Visit",
-        "timeframe": "second30",
-        "department": 7,
-        "assigned_department": 7,
-    },
-    {
-        "task": "Customer Site Visit",
-        "timeframe": "third30",
-        "department": 7,
-        "assigned_department": 7,
-    },
 ]
 with db.atomic():
     OnboardingChecklists.insert_many(
@@ -166,7 +166,7 @@ print(" done")
 # => Employee Onboarding Checklist ----------------------------------------------
 print("  - Creating Employee Onboarding Checklists...".ljust(50), end="")
 checklists = [
-    # Kenny's Onboarding
+    # Kenny's Onboarding (this is first to make a bug more obvious)
     {
         "task": "Welcome Gift Basket",
         "timeframe": "prestart",
@@ -198,6 +198,163 @@ checklists = [
         "assigned_employee": 6,
         "department": 7,
         "status": "to-do"
+    },
+    # Leroy's Onboarding
+    {
+        "task": "Welcome Email",
+        "timeframe": "prestart",
+        "employee": 1,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "employee": 1,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Information Security Training",
+        "timeframe": "second30",
+        "employee": 1,
+        "assigned_employee": 6,
+        "department": 3,
+        "status": "done"
+    },
+    {
+        "task": "Customer Site Visit",
+        "timeframe": "third30",
+        "employee": 1,
+        "assigned_employee": 6,
+        "department": 6,
+        "status": "done"
+    },
+    # Gustavo's Onboarding
+    {
+        "task": "Welcome Email",
+        "timeframe": "prestart",
+        "employee": 2,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "employee": 2,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Information Security Training",
+        "timeframe": "second30",
+        "employee": 2,
+        "assigned_employee": 6,
+        "department": 3,
+        "status": "done"
+    },
+    {
+        "task": "Customer Site Visit",
+        "timeframe": "third30",
+        "employee": 2,
+        "assigned_employee": 6,
+        "department": 6,
+        "status": "done"
+    },
+    # Lisa's Onboarding
+    {
+        "task": "Welcome Email",
+        "timeframe": "prestart",
+        "employee": 3,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "employee": 3,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Information Security Training",
+        "timeframe": "second30",
+        "employee": 3,
+        "assigned_employee": 6,
+        "department": 3,
+        "status": "done"
+    },
+    {
+        "task": "Read The Law can be fun by Henry Boardom",
+        "timeframe": "third30",
+        "employee": 3,
+        "assigned_employee": 6,
+        "department": 2,
+        "status": "done"
+    },
+    # Sara's Onboarding
+    {
+        "task": "Welcome Email",
+        "timeframe": "prestart",
+        "employee": 4,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "employee": 4,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Information Security Training",
+        "timeframe": "second30",
+        "employee": 4,
+        "assigned_employee": 6,
+        "department": 3,
+        "status": "done"
+    },
+    # Maria's Onboarding
+    {
+        "task": "Welcome Email",
+        "timeframe": "prestart",
+        "employee": 5,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Office Tour",
+        "timeframe": "first30",
+        "employee": 5,
+        "assigned_employee": 4,
+        "department": 1,
+        "status": "done"
+    },
+    {
+        "task": "Information Security Training",
+        "timeframe": "second30",
+        "employee": 5,
+        "assigned_employee": 6,
+        "department": 3,
+        "status": "done"
+    },
+    {
+        "task": "Count the beans",
+        "timeframe": "third30",
+        "employee": 5,
+        "assigned_employee": 6,
+        "department": 5,
+        "status": "done"
     },
 ]
 with db.atomic():

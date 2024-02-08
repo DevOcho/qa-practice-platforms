@@ -37,7 +37,12 @@
       <td class="align-middle">{{ employee.office.name }}</td>
       <td class="align-middle">{{ employee.hire_date|format_date }}</td>
       <td class="align-middle">{{ employee.status.name }}</td>
-      <td>{{ employee.tasks_completed }} of {{ employee.total_tasks }}</td>
+      <td>
+          {{ employee.tasks_completed }} of {{ employee.total_tasks }}
+          {% if employee.tasks_completed != employee.total_tasks %}
+          <i class="bi bi-cone-striped text-warning"></i>
+          {% endif %}
+      </td>
       <td class="align-middle">
          <button class="btn btn-sm btn-info bg-info-subtle text-white"
                  hx-get="/employee/onboarding/checklist/{{ employee.id }}"
