@@ -1,4 +1,4 @@
-"""QA Test App v2
+"""QA Test App v3
 
   This adds the PIP module to the HR portal.
 
@@ -6,10 +6,13 @@
         there are intentional bugs and security issues in this code.
 """
 
+from datetime import datetime
+
 from flask import Flask, render_template, redirect, url_for, request, current_app, flash
 from flask_babel import Babel
 from peewee import IntegrityError, DoesNotExist
 from playhouse.shortcuts import model_to_dict
+from babel.dates import format_date
 
 from model import (
     db,
@@ -41,7 +44,18 @@ def get_locale():
 
 
 babel.init_app(app, locale_selector=get_locale)
-# ==============================================================================
+
+
+# Template filters =============================================================
+@app.template_filter("format_date")
+def custom_format_date(value):
+    """Provide a date formatter for the template"""
+
+    # If it's an int or str then we need to change it to a date
+    value = datetime.strptime(str(value), "%Y-%m-%d")
+
+    # give them the locale formatted date
+    return format_date(value, locale=get_locale())
 
 
 # Application Routes ===========================================================
@@ -51,11 +65,33 @@ def index():
 
     # Local vars
     data = {}
+    data["employees"] = []
 
     # Get the list of employees
-    data["employees"] = Employees.select()
+    employees = Employees.select()
 
-    # Send them the working template
+    # Let's calculate their onboarding task counts
+    for employee in employees:
+        # Get this employee's tasks
+        checklist = EmployeeOnboardingChecklists.select().where(EmployeeOnboardingChecklists.employee == employee)
+
+        # Total them up
+        total_tasks = 0
+        tasks_completed = 0
+        for task in checklist:
+            total_tasks += 1
+            if task.status == "done":
+                tasks_completed += 1
+
+        # We need to convert the peewee object to a dict to add our counts to it
+        employee = model_to_dict(employee)
+        employee["total_tasks"] = total_tasks
+        employee["tasks_completed"] = tasks_completed
+
+        # Load the employee in the tempate
+        data["employees"].append(employee)
+
+    # Send them the now loaded template
     return render_template("index.html", data=data)
 
 
@@ -94,14 +130,14 @@ def save_employee():
 
     # Capture the request from the user
     name = request.form.get("name")
-    years = request.form.get("years")
+    hire_date = request.form.get("hire_date")
     status = request.form.get("status")
     department = request.form.get("department")
     office = request.form.get("office")
 
     # Let's save the employee in the database
     employee = Employees.create(
-        name=name, years=int(years), status=status, office=office, department=department
+        name=name, hire_date=hire_date, status=status, office=office, department=department
     )
 
     # Now let's create the onboarding checklist for this employee
@@ -113,7 +149,7 @@ def save_employee():
 
     # Create the checklist for the employee from the department list
     for task in checklist:
-        OnboardingEmployeeChecklists.create(
+        EmployeeOnboardingChecklists.create(
             task=task.task,
             timeframe=task.timeframe,
             employee=employee,
@@ -136,7 +172,7 @@ def edit_employee(eid):
     employee = Employees.select().where(Employees.id == eid).get()
     data["id"] = employee.id
     data["name"] = employee.name
-    data["years"] = employee.years
+    data["hire_date"] = employee.hire_date
     data["status"] = employee.status.id
     data["department"] = employee.department.id
     data["office"] = employee.office.id
@@ -156,7 +192,7 @@ def update_employee(eid):
 
     # Get the values from the user
     name = request.form.get("name")
-    years = request.form.get("years")
+    hire_date= request.form.get("hire_date")
     status = request.form.get("status")
     department = request.form.get("department")
     office = request.form.get("office")
@@ -165,7 +201,7 @@ def update_employee(eid):
     Employees.update(
         {
             Employees.name: name,
-            Employees.years: years,
+            Employees.hire_date: hire_date,
             Employees.status: status,
             Employees.department: department,
             Employees.office: office,

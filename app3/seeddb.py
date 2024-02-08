@@ -24,12 +24,12 @@ db.connect()
 # => Employees -----------------------------------------------------------------
 print("  - Creating Employees...".ljust(50), end="")
 employees = [
-    {"name": "Leroy Jenkins", "department": 6, "office": 3, "years": 3, "status": 2},
-    {"name": "Gustavo Garcia", "department": 6, "office": 3, "years": 7, "status": 2},
-    {"name": "Lisa Allgood", "department": 2, "office": 1, "years": 2, "status": 2},
-    {"name": "Sara Gonzales", "department": 1, "office": 1, "years": 12, "status": 2},
-    {"name": "Maria Sanchez", "department": 1, "office": 1, "years": 4, "status": 2},
-    {"name": "Kenny Pyatt", "department": 7, "office": 1, "years": 3, "status": 1},
+    {"name": "Leroy Jenkins", "department": 6, "office": 3, "hire_date": "2022-07-01", "status": 2},
+    {"name": "Gustavo Garcia", "department": 6, "office": 3, "hire_date": "2020-03-04", "status": 2},
+    {"name": "Lisa Allgood", "department": 2, "office": 1, "hire_date": "2023-05-15", "status": 2},
+    {"name": "Sara Gonzales", "department": 1, "office": 1, "hire_date": "2008-09-30", "status": 2},
+    {"name": "Maria Sanchez", "department": 1, "office": 1, "hire_date": "2022-05-24", "status": 2},
+    {"name": "Kenny Pyatt", "department": 7, "office": 1, "hire_date": "2022-12-04", "status": 1},
 ]
 with db.atomic():
     Employees.insert_many(employees).execute()  # pylint: disable=no-value-for-parameter

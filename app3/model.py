@@ -53,7 +53,7 @@ class Employees(BaseModel):
     name = CharField()
     department = ForeignKeyField(Departments, backref="departments")
     office = ForeignKeyField(Offices, backref="offices")
-    years = IntegerField()
+    hire_date = DateField()
     status = ForeignKeyField(EmployeeStatuses, backref="employee_statuses")
 
 

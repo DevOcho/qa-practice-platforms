@@ -23,9 +23,9 @@
       <th scope="col">{% trans %}Employee{% endtrans %}</th>
       <th scope="col">{% trans %}Department{% endtrans %}</th>
       <th scope="col">{% trans %}Office{% endtrans %}</th>
-      <th scope="col">{% trans %}Years of Service{% endtrans %}</th>
-      <!--<th scope="col">{% trans %}Onboarding Checklist{% endtrans %}</th>-->
+      <th scope="col">{% trans %}Hire Date{% endtrans %}</th>
       <th scope="col">{% trans %}Status{% endtrans %}</th>
+      <th scope="col">{% trans %}Onboarding Checklist{% endtrans %}</th>
       <th scope="col">{% trans %}Actions{% endtrans %}</th>
     </tr>
   </thead>
@@ -35,9 +35,9 @@
       <th scope="row" class="align-middle">{{ employee.name }}</th>
       <td class="align-middle">{{ employee.department.name }}</td>
       <td class="align-middle">{{ employee.office.name }}</td>
-      <td class="align-middle">{{ employee.years }}</td>
-      <!--<td>X of X</td>-->
+      <td class="align-middle">{{ employee.hire_date|format_date }}</td>
       <td class="align-middle">{{ employee.status.name }}</td>
+      <td>{{ employee.tasks_completed }} of {{ employee.total_tasks }}</td>
       <td class="align-middle">
          <button class="btn btn-sm btn-info bg-info-subtle text-white"
                  hx-get="/employee/onboarding/checklist/{{ employee.id }}"

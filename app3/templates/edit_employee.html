@@ -9,15 +9,15 @@
     <form hx-put="/employee/{{ data.id }}" hx-target="#main-content" hx-swap="innerHTML">
       <div class="mb-3">
         <label for="name" class="form-label">{% trans %}Name{% endtrans %}</label>
-        <input type="text" class="form-control" id="name" name="name" value="{{ data.name }}">
+        <input type="text" class="form-control" id="name" name="name" value="{{ data.name }}" required>
       </div>
       <div class="mb-3">
-        <label for="years" class="form-label">{% trans %}Years of Service{% endtrans %}</label>
-        <input type="text" class="form-control" id="years" name="years" value="{{ data.years }}">
+        <label for="hire-date" class="form-label">{% trans %}Hire Date{% endtrans %}</label>
+        <input type="date" class="form-control" id="hire-date" name="hire_date" value="{{ data.hire_date }}" required>
       </div>
       <div class="mb-3">
         <label for="employee-status" class="form-label">{% trans %}Employee Status{% endtrans %}</label>
-        <select class="form-select" id="employee-status" aria-label="status" name="status">
+        <select class="form-select" id="employee-status" aria-label="status" name="status" required>
           {% for status in data.employee_statuses -%}
           <option value="{{ status.id }}" {% if data.status == status.id %}selected{% endif %}>
             {{ status.name }}
@@ -27,7 +27,7 @@
       </div>
       <div class="mb-3">
         <label for="department" class="form-label">{% trans %}Department{% endtrans %}</label>
-        <select class="form-select" id="department" aria-label="department" name="department">
+        <select class="form-select" id="department" aria-label="department" name="department" required>
           {% for department in data.departments -%}
           <option value="{{ department.id }}" {%if data.department == department.id %}selected{% endif %}>{{ department.name }}</option>
           {% endfor %}
@@ -35,7 +35,7 @@
       </div>
       <div class="mb-3">
         <label for="offices" class="form-label">{% trans %}Offices{% endtrans %}</label>
-        <select class="form-select" id="offices" aria-label="office" name="office">
+        <select class="form-select" id="offices" aria-label="office" name="office" required>
           {% for office in data.offices -%}
           <option value="{{ office.id }}" {%if data.office == office.id %}selected{% endif %}>{{ office.name }}</option>
           {% endfor %}
