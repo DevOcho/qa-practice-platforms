@@ -215,9 +215,16 @@ def update_employee(eid):
 def delete_employee(eid):
     """Delete an employee"""
 
+    # Delete the PIPs for this employee
+    Pips.delete().where(Pips.employee == eid).execute()
+
+    # Delete the employee checklist
+    EmployeeOnboardingChecklists.delete().where(EmployeeOnboardingChecklists.employee == eid).execute()
+
     # Delete the requested employee
     Employees.delete().where(Employees.id == eid).execute()
 
+    # return to the list of employees
     return redirect(url_for("employee_table"), 303)
 
 
