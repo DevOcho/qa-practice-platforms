@@ -40,7 +40,12 @@ AVAILABLE_LOCALES = ["en", "es"]
 
 
 def get_locale():
-    return request.accept_languages.best_match(AVAILABLE_LOCALES)
+
+    locale = request.accept_languages.best_match(AVAILABLE_LOCALES)
+    if not locale:
+        locale = "en"
+
+    return locale
 
 
 babel.init_app(app, locale_selector=get_locale)
@@ -53,6 +58,9 @@ def custom_format_date(value):
 
     # If it's an int or str then we need to change it to a date
     value = datetime.strptime(str(value), "%Y-%m-%d")
+
+    if not value:
+        value = "1960-01-01"
 
     # give them the locale formatted date
     return format_date(value, locale=get_locale())

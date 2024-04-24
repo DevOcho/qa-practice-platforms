@@ -15,6 +15,11 @@ cd qa-practice-platforms
 docker compose up
 ```
 
-These will start numerous small web applications on your computer as well as a
-MariaDB database server.  These are intended for use with the DevOcho training
-material (training.devocho.com).
+These will start numerous small web applications on your computer.  These are
+intended for use with the DevOcho training material (training.devocho.com).
+
+You can see these apps at
+
+ http://localhost:8800/
+ http://localhost:8801/
+ http://localhost:8802/
