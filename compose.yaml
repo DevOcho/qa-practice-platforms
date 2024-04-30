@@ -20,8 +20,10 @@ services:
       - /home/rogue/source/devocho/qa-practice-platforms/app3:/code
     ports:
       - "8802:5000"
-  #db:
-    #container_name: qa-test-db
-    #image: "mariadb:11.2.2"
-    #environment:
-        #- MARIADB_ROOT_PASSWORD=qa_tester
+  application4:
+    container_name: qa-test-app-4
+    build: app4/.
+    volumes:
+      - /home/rogue/source/devocho/qa-practice-platforms/app4:/code
+    ports:
+      - "8803:5000"

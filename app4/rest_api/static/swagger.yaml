@@ -1,0 +1,156 @@
+openapi: "3.0.0"
+info:
+  title: Employee API
+  description: API Provides access to fake Employee data for QA testing purposes.
+  version: 1.0.0
+host: 127.0.0.1:8803
+basePath: /
+schemes:
+  - http
+paths:
+  /employee:
+    get:
+      summary: Returns a list of employees
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+    post:
+      summary: Create a new employee
+      produces:
+        - application/json
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:          # <!--- form field name
+                  type: string
+                title:    # <!--- form field name
+                  type: string
+                fired:
+                  type: boolean
+                hired_at:
+                  type: date
+                fired_at:
+                  type: date
+              required:
+                - name
+                - title
+                - fired
+                - hired_at
+  /employee/{eid}:
+    get:
+      summary: Returns information for a specific employee
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: eid
+          required: true
+          type: integer
+          minimum: 1
+          description: Employee ID
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Update an entire single employee record
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: eid
+          required: true
+          type: integer
+          minimum: 1
+          description: Employee ID
+      responses:
+        200:
+          description: OK
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:          # <!--- form field name
+                  type: string
+                title:    # <!--- form field name
+                  type: string
+                fired:
+                  type: boolean
+                hired_at:
+                  type: date
+                fired_at:
+                  type: date
+              required:
+                - name
+                - title
+                - fired
+                - hired_at
+    patch:
+      summary: Update portions of an employee record
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: eid
+          required: true
+          type: integer
+          minimum: 1
+          description: Employee ID
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:          # <!--- form field name
+                  type: string
+                title:    # <!--- form field name
+                  type: string
+                fired:
+                  type: boolean
+                hired_at:
+                  type: date
+                fired_at:
+                  type: date
+    delete:
+      summary: Update an entire single employee record
+      parameters:
+        - in: path
+          name: eid
+          required: true
+          type: integer
+          minimum: 1
+          description: Employee ID.
+      responses:
+        204:
+          description: No Content
+
+components:
+  schemas:
+    Employee:
+      type: Object
+      properties:
+        id: integer
+        name: string
+        title: string
+        fired: boolean
+        hired_at: datetime
+        fired_at: datetime
