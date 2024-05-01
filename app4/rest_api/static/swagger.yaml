@@ -37,16 +37,21 @@ paths:
             schema:
               type: object
               properties:
-                name:          # <!--- form field name
+                name:
                   type: string
-                title:    # <!--- form field name
+                  description: Name of the employee
+                title:
                   type: string
+                  description: Employee's job title
                 fired:
                   type: boolean
+                  description: true = employee was fired and false = employee is still hired
                 hired_at:
                   type: date
+                  description: the date the employee started.
                 fired_at:
                   type: date
+                  description: Optional field.  Date employee was fired.
               required:
                 - name
                 - title
